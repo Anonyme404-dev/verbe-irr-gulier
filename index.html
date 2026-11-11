@@ -1,574 +1,248 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Révision Verbes Irréguliers</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --success: #16a34a;
-            --error: #dc2626;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 12px;
-        }
-
-        header {
-            text-align: center;
-            margin: 10px 0 20px 0;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 24px;
-        }
-
-        /* Onglets */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 10px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 12px 8px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-
-        .tab-btn.active {
-            background: var(--card-bg);
-            color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-        }
-
-        .section-view {
-            display: none;
-        }
-
-        .section-view.active {
-            display: block;
-        }
-
-        /* Mode Quiz */
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding: 0 4px;
-        }
-
-        .quiz-card {
-            background: #f8fafc;
-            border: 2px solid var(--border);
-            border-radius: 14px;
-            padding: 24px 20px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .quiz-category {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .quiz-prompt {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .quiz-given-box {
-            background: var(--primary);
-            color: white;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .quiz-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--primary);
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-        }
-
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
-        }
-
-        .btn:hover:not(:disabled) {
-            background: var(--primary-hover);
-        }
-
-        .btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        .quiz-feedback {
-            margin-top: 15px;
-            font-weight: 600;
-            font-size: 1rem;
-            min-height: 24px;
-        }
-
-        .feedback-correct { color: var(--success); }
-        .feedback-incorrect { color: var(--error); }
-
-        /* Mode Liste */
-        .search-bar {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            margin-bottom: 16px;
-            outline: none;
-        }
-
-        .search-bar:focus {
-            border-color: var(--primary);
-        }
-
-        .controls-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .toggle-col-btn {
-            flex: 1;
-            background: #e2e8f0;
-            color: var(--text-main);
-            border: none;
-            padding: 10px 6px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .toggle-col-btn.hidden-col {
-            background: #cbd5e1;
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-
-        .category-group {
-            margin-bottom: 24px;
-        }
-
-        .category-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-        }
-
-        /* Grille en cases adaptative PC et Mobile */
-        .verb-grid-card {
-            background: #f8fafc;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        @media(max-width: 600px) {
-            .verb-grid-card {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .verb-cell {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .verb-cell .cell-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .verb-cell .cell-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .hidden-text {
-            background: #cbd5e1;
-            color: transparent !important;
-            border-radius: 4px;
-            user-select: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révision Verbes Irréguliers</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#4f46e5;--primary-hover:#4338ca;--bg:#f1f5f9;--card:#fff;--soft:#f8fafc;--text:#0f172a;--muted:#64748b;--border:#cbd5e1;--tab:#e2e8f0;--success:#16a34a;--error:#dc2626}
+@media(prefers-color-scheme:dark){:root{--primary:#818cf8;--primary-hover:#6366f1;--bg:#0f172a;--card:#1e293b;--soft:#0f172a;--text:#f1f5f9;--muted:#94a3b8;--border:#475569;--tab:#334155;--success:#4ade80;--error:#f87171}}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:20px 12px}
+header{text-align:center;margin:10px 0 20px;width:100%}
+h1{font-size:1.8rem;color:var(--primary)}
+.subtitle{color:var(--muted);font-size:.95rem}
+.container{width:100%;max-width:700px;background:var(--card);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px}
+.tabs{display:flex;gap:8px;margin-bottom:20px;background:var(--tab);padding:4px;border-radius:10px}
+.tab-btn{flex:1;background:none;border:none;font-size:1rem;font-weight:600;color:var(--muted);cursor:pointer;padding:12px 8px;border-radius:8px}
+.tab-btn.active{background:var(--card);color:var(--primary);box-shadow:0 2px 4px rgba(0,0,0,.1)}
+.section-view{display:none}.section-view.active{display:block}
+.stats-bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:.9rem;color:var(--muted);font-weight:600;margin-bottom:12px}
+select,.search-bar,.input-group input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;outline:none;background:var(--card);color:var(--text)}
+select{margin-bottom:14px}
+select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--primary)}
+.quiz-card{background:var(--soft);border:2px solid var(--border);border-radius:14px;padding:24px 20px;text-align:center;margin-bottom:16px}
+.quiz-prompt{font-size:.95rem;color:var(--muted);margin-bottom:10px}
+.quiz-given-box{background:var(--primary);color:#fff;padding:14px;border-radius:10px;font-size:1.5rem;font-weight:700;margin-bottom:20px}
+.quiz-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;text-align:left}
+.input-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;color:var(--primary)}
+.input-group input.ok{border-color:var(--success)}
+.input-group input.ko{border-color:var(--error)}
+.input-group .answer{font-size:.8rem;color:var(--error);margin-top:3px}
+.btn{background:var(--primary);color:#fff;border:none;padding:14px;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%}
+.btn:hover:not(:disabled){background:var(--primary-hover)}
+.btn:disabled{background:#94a3b8;cursor:not-allowed}
+.btn.secondary{background:#64748b}
+.btn.link{background:none;color:var(--muted);font-size:.8rem;padding:10px;margin-top:6px}
+.quiz-feedback{margin-top:15px;font-weight:600;min-height:24px}
+.ok-text{color:var(--success)}.ko-text{color:var(--error)}
+.search-bar{margin-bottom:16px}
+.controls-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.toggle-col-btn{flex:1;background:var(--tab);color:var(--text);border:none;padding:10px 6px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer}
+.toggle-col-btn.hidden-col{opacity:.6;text-decoration:line-through}
+.verb-grid-card{background:var(--soft);border:2px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.verb-grid-card{grid-template-columns:1fr 1fr}}
+.verb-cell{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.cell-label{font-size:.7rem;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.cell-value{font-size:1rem;font-weight:700}
+.hidden-text{background:var(--border);color:transparent!important;border-radius:4px;cursor:pointer;user-select:none}
+.empty{text-align:center;color:var(--muted);padding:20px}
+</style>
 </head>
 <body>
+<header>
+  <h1>Verbes Irréguliers</h1>
+  <p class="subtitle">Espace de révision interactif</p>
+</header>
 
-    <header>
-        <h1>Verbes Irréguliers</h1>
-        <p class="subtitle">Espace de révision interactif</p>
-    </header>
+<main class="container">
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" id="tab-quiz" role="tab" onclick="switchTab('quiz')">🎯 Mode Quiz</button>
+    <button class="tab-btn" id="tab-list" role="tab" onclick="switchTab('list')">📖 Mode Liste</button>
+  </div>
 
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('quiz')">🎯 Mode Quiz</button>
-            <button class="tab-btn" onclick="switchTab('list')">📖 Mode Liste</button>
-        </div>
-
-        <!-- SECTION QUIZ -->
-        <div id="quiz-section" class="section-view active">
-            <div class="stats-bar">
-                <span id="score-text">Score : 0 / 0</span>
-                <span id="progress-text">Verbe 1/26</span>
-            </div>
-
-            <div class="quiz-card">
-                <div class="quiz-category" id="q-category">Catégorie</div>
-                <div class="quiz-prompt" id="q-prompt-text">À partir de cet élément, trouve les 3 autres :</div>
-                
-                <div class="quiz-given-box" id="q-given-box">Élément</div>
-
-                <div class="quiz-inputs" id="quiz-inputs-container">
-                    <!-- Généré dynamiquement -->
-                </div>
-
-                <button class="btn" id="submit-btn" onclick="checkAnswer()" disabled>Valider</button>
-                <div class="quiz-feedback" id="q-feedback"></div>
-            </div>
-            <button class="btn" id="next-btn" style="background:#64748b;" onclick="nextQuestion()" disabled>Verbe Suivant ➔</button>
-        </div>
-
-        <!-- SECTION LISTE -->
-        <div id="list-section" class="section-view">
-            <input type="text" class="search-bar" id="search-input" placeholder="🔍 Rechercher un verbe ou une traduction..." onkeyup="filterTable()">
-            
-            <div class="controls-row">
-                <button class="toggle-col-btn" id="btn-col-0" onclick="toggleColumn(0)">Masquer Base</button>
-                <button class="toggle-col-btn" id="btn-col-1" onclick="toggleColumn(1)">Masquer Prétérit</button>
-                <button class="toggle-col-btn" id="btn-col-2" onclick="toggleColumn(2)">Masquer Participe</button>
-                <button class="toggle-col-btn" id="btn-col-3" onclick="toggleColumn(3)">Masquer Traduction</button>
-            </div>
-
-            <div id="tables-container"></div>
-        </div>
+  <section id="quiz-section" class="section-view active">
+    <select id="pool-select" aria-label="Catégorie à réviser" onchange="initQuiz()"></select>
+    <div class="stats-bar">
+      <span id="score-text"></span>
+      <span id="streak-text"></span>
+      <span id="progress-text"></span>
     </div>
+    <div class="quiz-card">
+      <div class="quiz-prompt" id="q-prompt-text"></div>
+      <div class="quiz-given-box" id="q-given-box"></div>
+      <div class="quiz-inputs" id="quiz-inputs-container"></div>
+      <button class="btn" id="submit-btn" onclick="checkAnswer()" disabled>Valider</button>
+      <div class="quiz-feedback" id="q-feedback" aria-live="polite"></div>
+    </div>
+    <button class="btn secondary" id="next-btn" onclick="nextQuestion()" disabled>Verbe suivant ➔</button>
+    <button class="btn link" onclick="resetStats()">Réinitialiser score et erreurs</button>
+  </section>
 
-    <script>
-        const verbsData = [
-            { base: "Be", preterit: "Was/were", participle: "Been", french: "Être", category: "Ceux à savoir absolument !" },
-            { base: "Have", preterit: "Had", participle: "Had", french: "Avoir", category: "Ceux à savoir absolument !" },
-            { base: "Do", preterit: "Did", participle: "Done", french: "Faire", category: "Ceux à savoir absolument !" },
-            { base: "Make", preterit: "Made", participle: "Made", french: "Faire, fabriquer", category: "Ceux à savoir absolument !" },
-            { base: "Take", preterit: "Took", participle: "Taken", french: "Prendre", category: "Ceux à savoir absolument !" },
-            { base: "Go", preterit: "Went", participle: "Gone", french: "Aller", category: "Ceux à savoir absolument !" },
-            { base: "Get", preterit: "Got", participle: "Got", french: "Avoir, obtenir", category: "Ceux à savoir absolument !" },
+  <section id="list-section" class="section-view">
+    <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher un verbe ou une traduction..." oninput="renderTables()">
+    <div class="controls-row" id="controls-row"></div>
+    <div id="tables-container"></div>
+  </section>
+</main>
 
-            { base: "Become", preterit: "Became", participle: "Become", french: "Devenir", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Come", preterit: "Came", participle: "Come", french: "Venir", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Overcome", preterit: "Overcame", participle: "Overcome", french: "Vaincre, surmonter", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Run", preterit: "Ran", participle: "Run", french: "Courir", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Bear", preterit: "Bore", participle: "Born", french: "Supporter, mettre au monde", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Swear", preterit: "Swore", participle: "Sworn", french: "Jurer", category: "Ceux qui ont 2 formes identiques" },
-            { base: "Wear", preterit: "Wore", participle: "Worn", french: "Porter (habits)", category: "Ceux qui ont 2 formes identiques" },
+<script>
 
-            { base: "Choose", preterit: "Chose", participle: "Chosen", french: "Choisir", category: "Participes passés en 'EN'" },
-            { base: "Eat", preterit: "Ate", participle: "Eaten", french: "Manger", category: "Participes passés en 'EN'" },
-            { base: "Drive", preterit: "Drove", participle: "Driven", french: "Conduire", category: "Participes passés en 'EN'" },
-            { base: "Fall", preterit: "Fell", participle: "Fallen", french: "Tomber", category: "Participes passés en 'EN'" },
-            { base: "Forbid", preterit: "Forbade", participle: "Forbidden", french: "Interdire", category: "Participes passés en 'EN'" },
-            { base: "Forget", preterit: "Forgot", participle: "Forgotten", french: "Oublier", category: "Participes passés en 'EN'" },
-            { base: "Forgive", preterit: "Forgave", participle: "Forgiven", french: "Pardonner", category: "Participes passés en 'EN'" },
-            { base: "Give", preterit: "Gave", participle: "Given", french: "Donner", category: "Participes passés en 'EN'" },
-            { base: "Hide", preterit: "Hid", participle: "Hidden", french: "(se) cacher", category: "Participes passés en 'EN'" },
-            { base: "Speak", preterit: "Spoke", participle: "Spoken", french: "Parler", category: "Participes passés en 'EN'" },
-            { base: "Steal", preterit: "Stole", participle: "Stolen", french: "Voler, dérober", category: "Participes passés en 'EN'" },
-            { base: "Write", preterit: "Wrote", participle: "Written", french: "Écrire", category: "Participes passés en 'EN'" }
-        ];
+const verbsData = [
+  ["Be","Was/were","Been","Être"],["Have","Had","Had","Avoir"],
+  ["Do","Did","Done","Faire"],["Make","Made","Made","Faire, fabriquer"],
+  ["Take","Took","Taken","Prendre"],["Go","Went","Gone","Aller"],
+  ["Get","Got","Got","Avoir, obtenir"],
+  ["Become","Became","Become","Devenir"],["Come","Came","Come","Venir"],
+  ["Overcome","Overcame","Overcome","Vaincre, surmonter"],["Run","Ran","Run","Courir"],
+  ["Bear","Bore","Born","Supporter, mettre au monde"],["Swear","Swore","Sworn","Jurer"],
+  ["Wear","Wore","Worn","Porter (habits)"],["Choose","Chose","Chosen","Choisir"],
+  ["Eat","Ate","Eaten","Manger"],["Drive","Drove","Driven","Conduire"],
+  ["Fall","Fell","Fallen","Tomber"],["Forbid","Forbade","Forbidden","Interdire"],
+  ["Forget","Forgot","Forgotten","Oublier"],["Forgive","Forgave","Forgiven","Pardonner"],
+  ["Give","Gave","Given","Donner"],["Hide","Hid","Hidden","(se) cacher"],
+  ["Speak","Spoke","Spoken","Parler"],["Steal","Stole","Stolen","Voler, dérober"],
+  ["Write","Wrote","Written","Écrire"]
+].map(([base,preterit,participle,french]) => ({base,preterit,participle,french}));
 
-        let currentQuizIndex = 0;
-        let score = 0;
-        let totalAnswered = 0;
-        let shuffledVerbs = [];
-        let givenKey = '';
-        let hiddenCols = { 0: false, 1: false, 2: false, 3: false };
+const keys = ['base','preterit','participle','french'];
+const meta = {base:"Base Verbale",preterit:"Prétérit",participle:"Participe Passé",french:"Traduction"};
 
-        const fieldMeta = {
-            base: { label: "Base Verbale", key: "base" },
-            preterit: { label: "Prétérit", key: "preterit" },
-            participle: { label: "Participe Passé", key: "participle" },
-            french: { label: "Traduction", key: "french" }
-        };
+/* ---------- Sauvegarde locale (sécurisée) ---------- */
+const store = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+let missed = new Set(store.get('missed', []));
+let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
 
-        function initQuiz() {
-            shuffledVerbs = [...verbsData].sort(() => Math.random() - 0.5);
-            currentQuizIndex = 0;
-            score = 0;
-            totalAnswered = 0;
-            loadQuestion();
-        }
+/* ---------- Comparaison tolérante ---------- */
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/\(.*?\)/g,'').replace(/\s+/g,' ').trim();
+const accepted = val => norm(val).split(/[\/,]/).map(s => s.trim()).filter(Boolean);
+const isCorrect = (input, expected) => accepted(expected).includes(norm(input));
 
-        function loadQuestion() {
-            if (currentQuizIndex >= shuffledVerbs.length) {
-                shuffledVerbs = [...verbsData].sort(() => Math.random() - 0.5);
-                currentQuizIndex = 0;
-            }
-            const v = shuffledVerbs[currentQuizIndex];
-            document.getElementById('q-category').innerText = v.category;
+/* ---------- Quiz ---------- */
+let pool = [], idx = 0, score = 0, total = 0, streak = 0, answered = false, current = null;
 
-            const keys = ['base', 'preterit', 'participle', 'french'];
-            givenKey = keys[Math.floor(Math.random() * keys.length)];
+function buildSelect(){
+  document.getElementById('pool-select').innerHTML =
+    `<option value="all">Tous les verbes (${verbsData.length})</option><option value="missed">🔁 Mes erreurs</option>`;
+}
 
-            document.getElementById('q-prompt-text').innerText = `À partir de [ ${fieldMeta[givenKey].label} ], trouve les 3 autres :`;
-            document.getElementById('q-given-box').innerText = v[givenKey];
+const shuffle = a => { a = [...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
 
-            let inputsHtml = '';
-            keys.forEach(k => {
-                if (k !== givenKey) {
-                    inputsHtml += `
-                        <div class="input-group">
-                            <label>${fieldMeta[k].label}</label>
-                            <input type="text" class="quiz-target-input" data-key="${k}" placeholder="Entrer ${fieldMeta[k].label.toLowerCase()}..." autocomplete="off" autocapitalize="none" oninput="checkAllInputsFilled()">
-                        </div>
-                    `;
-                }
-            });
-            document.getElementById('quiz-inputs-container').innerHTML = inputsHtml;
+function initQuiz(){
+  const choice = document.getElementById('pool-select').value;
+  let list = verbsData;
+  if (choice === 'missed') list = verbsData.filter(v => missed.has(v.base));
+  if (!list.length) { list = verbsData; document.getElementById('pool-select').value = 'all'; }
+  pool = shuffle(list); idx = 0; score = 0; total = 0; streak = 0;
+  loadQuestion();
+}
 
-            document.getElementById('q-feedback').innerText = '';
-            document.getElementById('progress-text').innerText = `Verbe ${currentQuizIndex + 1} / ${shuffledVerbs.length}`;
-            document.getElementById('score-text').innerText = `Score : ${score} / ${totalAnswered}`;
-            
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.innerText = "Valider";
-            submitBtn.disabled = true;
-            submitBtn.setAttribute("onclick", "checkAnswer()");
-            
-            document.getElementById('next-btn').disabled = true;
-        }
+function loadQuestion(){
+  if (idx >= pool.length){ pool = shuffle(pool); idx = 0; }
+  current = pool[idx]; answered = false;
+  const givenKey = keys[Math.floor(Math.random()*keys.length)];
+  document.getElementById('q-prompt-text').textContent = `À partir de [ ${meta[givenKey]} ], trouve les 3 autres :`;
+  document.getElementById('q-given-box').textContent = current[givenKey];
+  document.getElementById('quiz-inputs-container').innerHTML = keys.filter(k => k !== givenKey).map(k => `
+    <div class="input-group">
+      <label for="in-${k}">${meta[k]}</label>
+      <input id="in-${k}" type="text" class="quiz-target-input" data-key="${k}" placeholder="Entrer ${meta[k].toLowerCase()}..." autocomplete="off" autocapitalize="none" spellcheck="false" oninput="updateSubmit()">
+      <div class="answer"></div>
+    </div>`).join('');
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('next-btn').disabled = true;
+  updateStats();
+  document.querySelector('.quiz-target-input')?.focus();
+}
 
-        function checkAllInputsFilled() {
-            const inputs = document.querySelectorAll('.quiz-target-input');
-            let allFilled = true;
-            inputs.forEach(inp => {
-                if (inp.value.trim().length === 0) allFilled = false;
-            });
-            document.getElementById('submit-btn').disabled = !allFilled;
-        }
+function updateStats(){
+  document.getElementById('score-text').textContent = `Score : ${score} / ${total}`;
+  document.getElementById('streak-text').textContent = `🔥 Série : ${streak}`;
+  document.getElementById('progress-text').textContent = `Verbe ${idx+1} / ${pool.length}`;
+}
 
-        function checkAnswer() {
-            const v = shuffledVerbs[currentQuizIndex];
-            const inputs = document.querySelectorAll('.quiz-target-input');
-            let allCorrect = true;
+function updateSubmit(){
+  const all = [...document.querySelectorAll('.quiz-target-input')].every(i => i.value.trim());
+  document.getElementById('submit-btn').disabled = !all || answered;
+}
 
-            inputs.forEach(inp => {
-                const k = inp.getAttribute('data-key');
-                const userVal = inp.value.trim().toLowerCase();
-                const correctVal = v[k].toLowerCase();
-                if (!correctVal.includes(userVal)) {
-                    allCorrect = false;
-                }
-            });
+function checkAnswer(){
+  if (answered) return;
+  answered = true;
+  let allOk = true;
+  document.querySelectorAll('.quiz-target-input').forEach(inp => {
+    const k = inp.dataset.key, ok = isCorrect(inp.value, current[k]);
+    inp.classList.add(ok ? 'ok' : 'ko'); inp.disabled = true;
+    if (!ok){ allOk = false; inp.parentElement.querySelector('.answer').textContent = `Attendu : ${current[k]}`; }
+  });
+  total++;
+  const fb = document.getElementById('q-feedback');
+  if (allOk){ score++; streak++; missed.delete(current.base); fb.innerHTML = '<span class="ok-text">✅ Bravo ! Tout est correct.</span>'; }
+  else { streak = 0; missed.add(current.base); fb.innerHTML = '<span class="ko-text">❌ Pas tout à fait, regarde les corrections.</span>'; }
+  store.set('missed', [...missed]);
+  updateStats();
+  document.getElementById('submit-btn').disabled = true;
+  const next = document.getElementById('next-btn'); next.disabled = false; next.focus();
+}
 
-            totalAnswered++;
-            const feedbackEl = document.getElementById('q-feedback');
+function nextQuestion(){ idx++; loadQuestion(); }
 
-            if (allCorrect) {
-                score++;
-                feedbackEl.innerHTML = `<span class="feedback-correct">✅ Bravo ! Tout est correct.</span>`;
-            } else {
-                feedbackEl.innerHTML = `<span class="feedback-incorrect">❌ Faux. Attendu : Base(${v.base}) | Prét(${v.preterit}) | Part(${v.participle}) | Trad(${v.french})</span>`;
-            }
+function resetStats(){
+  if (!confirm("Effacer le score et la liste des erreurs ?")) return;
+  missed.clear(); store.set('missed', []); initQuiz();
+}
 
-            document.getElementById('score-text').innerText = `Score : ${score} / ${totalAnswered}`;
-            
-            inputs.forEach(inp => inp.disabled = true);
-            document.getElementById('submit-btn').disabled = true;
-            document.getElementById('next-btn').disabled = false;
-        }
+/* Entrée = valider / suivant */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || !document.getElementById('quiz-section').classList.contains('active')) return;
+  if (!answered){ if (!document.getElementById('submit-btn').disabled) checkAnswer(); }
+  else if (e.target.id !== 'next-btn') nextQuestion();
+});
 
-        function nextQuestion() {
-            currentQuizIndex++;
-            loadQuestion();
-        }
+/* ---------- Liste ---------- */
+function switchTab(tab){
+  for (const t of ['quiz','list']){
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById(t+'-section').classList.toggle('active', t===tab);
+  }
+  if (tab === 'list') renderTables();
+}
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
+function buildControls(){
+  document.getElementById('controls-row').innerHTML = keys.map((k,i) =>
+    `<button class="toggle-col-btn" id="btn-col-${i}" onclick="toggleColumn(${i})"></button>`).join('');
+  keys.forEach((_,i) => updateToggleLabel(i));
+}
+function updateToggleLabel(i){
+  const b = document.getElementById('btn-col-'+i);
+  b.textContent = (hiddenCols[i] ? 'Afficher ' : 'Masquer ') + meta[keys[i]].replace('Verbale','').replace('Passé','').trim();
+  b.classList.toggle('hidden-col', hiddenCols[i]);
+}
+function toggleColumn(i){
+  hiddenCols[i] = !hiddenCols[i]; store.set('hiddenCols', hiddenCols);
+  updateToggleLabel(i); renderTables();
+}
 
-            if (tab === 'quiz') {
-                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
-                document.getElementById('quiz-section').classList.add('active');
-            } else {
-                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
-                document.getElementById('list-section').classList.add('active');
-                renderTables();
-            }
-        }
+function renderTables(){
+  const q = norm(document.getElementById('search-input').value);
+  const container = document.getElementById('tables-container');
+  const list = verbsData.filter(v => keys.some(k => norm(v[k]).includes(q)));
+  container.innerHTML = list.length ? list.map(v => `
+    <div class="verb-grid-card">${keys.map((k,i) => `
+      <div class="verb-cell">
+        <div class="cell-label">${meta[k]}</div>
+        <div class="cell-value ${hiddenCols[i] ? 'hidden-text' : ''}" ${hiddenCols[i] ? 'onclick="this.classList.remove(\'hidden-text\')" title="Cliquer pour révéler"' : ''}>${v[k]}</div>
+      </div>`).join('')}
+    </div>`).join('') : '<p class="empty">Aucun verbe trouvé.</p>';
+}
 
-        function toggleColumn(colIndex) {
-            hiddenCols[colIndex] = !hiddenCols[colIndex];
-            document.getElementById(`btn-col-${colIndex}`).classList.toggle('hidden-col');
-            renderTables();
-        }
-
-        function renderTables(filterText = "") {
-            const container = document.getElementById('tables-container');
-            container.innerHTML = '';
-            const categories = [...new Set(verbsData.map(v => v.category))];
-
-            categories.forEach(cat => {
-                const catVerbs = verbsData.filter(v => v.category === cat && (
-                    v.base.toLowerCase().includes(filterText) ||
-                    v.preterit.toLowerCase().includes(filterText) ||
-                    v.participle.toLowerCase().includes(filterText) ||
-                    v.french.toLowerCase().includes(filterText)
-                ));
-
-                if (catVerbs.length === 0) return;
-
-                const groupDiv = document.createElement('div');
-                groupDiv.className = 'category-group';
-                groupDiv.innerHTML = `<div class="category-title">${cat}</div>`;
-
-                catVerbs.forEach(v => {
-                    const card = document.createElement('div');
-                    card.className = 'verb-grid-card';
-                    card.innerHTML = `
-                        <div class="verb-cell">
-                            <div class="cell-label">Base Verbale</div>
-                            <div class="cell-value ${hiddenCols[0] ? 'hidden-text' : ''}">${v.base}</div>
-                        </div>
-                        <div class="verb-cell">
-                            <div class="cell-label">Prétérit</div>
-                            <div class="cell-value ${hiddenCols[1] ? 'hidden-text' : ''}">${v.preterit}</div>
-                        </div>
-                        <div class="verb-cell">
-                            <div class="cell-label">Participe Passé</div>
-                            <div class="cell-value ${hiddenCols[2] ? 'hidden-text' : ''}">${v.participle}</div>
-                        </div>
-                        <div class="verb-cell">
-                            <div class="cell-label">Traduction</div>
-                            <div class="cell-value ${hiddenCols[3] ? 'hidden-text' : ''}">${v.french}</div>
-                        </div>
-                    `;
-                    groupDiv.appendChild(card);
-                });
-
-                container.appendChild(groupDiv);
-            });
-        }
-
-        function filterTable() {
-            renderTables(document.getElementById('search-input').value.toLowerCase());
-        }
-
-        initQuiz();
-    </script>
+buildSelect(); buildControls(); initQuiz();
+</script>
 </body>
 </html>
