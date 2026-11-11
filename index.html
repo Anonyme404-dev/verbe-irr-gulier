@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Révision Verbes Irréguliers</title>
+<meta name="theme-color" content="#4f46e5">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--primary:#4f46e5;--primary-hover:#4338ca;--bg:#f1f5f9;--card:#fff;--soft:#f8fafc;--text:#0f172a;--muted:#64748b;--border:#cbd5e1;--tab:#e2e8f0;--success:#16a34a;--error:#dc2626}
@@ -24,7 +28,8 @@ select{margin-bottom:14px}
 select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--primary)}
 .quiz-card{background:var(--soft);border:2px solid var(--border);border-radius:14px;padding:24px 20px;text-align:center;margin-bottom:16px}
 .quiz-prompt{font-size:.95rem;color:var(--muted);margin-bottom:10px}
-.quiz-given-box{background:var(--primary);color:#fff;padding:14px;border-radius:10px;font-size:1.5rem;font-weight:700;margin-bottom:20px}
+.quiz-given-box{background:var(--primary);color:#fff;padding:14px;border-radius:10px;font-size:1.5rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:12px}
+.quiz-given-box .speak-btn{background:rgba(255,255,255,.2)}
 .quiz-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;text-align:left}
 .input-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;color:var(--primary)}
 .input-group input.ok{border-color:var(--success)}
@@ -35,8 +40,12 @@ select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--prima
 .btn:disabled{background:#94a3b8;cursor:not-allowed}
 .btn.secondary{background:#64748b}
 .btn.link{background:none;color:var(--muted);font-size:.8rem;padding:10px;margin-top:6px}
+.speak-btn{background:var(--tab);border:none;border-radius:20px;padding:6px 12px;font-size:1rem;cursor:pointer;color:inherit}
+.speak-btn.mini{padding:2px 7px;font-size:.8rem;margin-left:4px}
 .quiz-feedback{margin-top:15px;font-weight:600;min-height:24px}
+.quiz-feedback .speak-btn{display:block;margin:10px auto 0;font-size:.9rem;color:var(--text)}
 .ok-text{color:var(--success)}.ko-text{color:var(--error)}
+.note{font-size:.8rem;color:var(--muted);font-weight:400;margin-top:4px}
 .search-bar{margin-bottom:16px}
 .controls-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .toggle-col-btn{flex:1;background:var(--tab);color:var(--text);border:none;padding:10px 6px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer}
@@ -63,21 +72,27 @@ select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--prima
   </div>
 
   <section id="quiz-section" class="section-view active">
-    <select id="pool-select" aria-label="Catégorie à réviser" onchange="initQuiz()"></select>
+    <select id="mode-select" aria-label="Mode de révision" onchange="initQuiz()">
+      <option value="srs">🧠 Répétition espacée (recommandé)</option>
+      <option value="all">🎲 Tous les verbes au hasard</option>
+    </select>
     <div class="stats-bar">
       <span id="score-text"></span>
       <span id="streak-text"></span>
-      <span id="progress-text"></span>
+      <span id="due-text"></span>
     </div>
     <div class="quiz-card">
       <div class="quiz-prompt" id="q-prompt-text"></div>
-      <div class="quiz-given-box" id="q-given-box"></div>
+      <div class="quiz-given-box">
+        <span id="q-given-box"></span>
+        <button type="button" class="speak-btn" id="speak-given" onclick="speakGiven()" aria-label="Écouter en anglais">🔊</button>
+      </div>
       <div class="quiz-inputs" id="quiz-inputs-container"></div>
       <button class="btn" id="submit-btn" onclick="checkAnswer()" disabled>Valider</button>
       <div class="quiz-feedback" id="q-feedback" aria-live="polite"></div>
     </div>
     <button class="btn secondary" id="next-btn" onclick="nextQuestion()" disabled>Verbe suivant ➔</button>
-    <button class="btn link" onclick="resetStats()">Réinitialiser score et erreurs</button>
+    <button class="btn link" onclick="resetStats()">Réinitialiser ma progression</button>
   </section>
 
   <section id="list-section" class="section-view">
@@ -88,7 +103,6 @@ select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--prima
 </main>
 
 <script>
-
 const verbsData = [
   ["Be","Was/were","Been","Être"],["Have","Had","Had","Avoir"],
   ["Do","Did","Done","Faire"],["Make","Made","Made","Faire, fabriquer"],
@@ -109,13 +123,33 @@ const verbsData = [
 const keys = ['base','preterit','participle','french'];
 const meta = {base:"Base Verbale",preterit:"Prétérit",participle:"Participe Passé",french:"Traduction"};
 
-/* ---------- Sauvegarde locale (sécurisée) ---------- */
+/* ---------- Sauvegarde locale ---------- */
 const store = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
-let missed = new Set(store.get('missed', []));
 let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
+
+/* ---------- Prononciation (anglais) ---------- */
+const canSpeak = 'speechSynthesis' in window;
+let enVoice = null;
+function pickVoice(){
+  if (!canSpeak) return;
+  const vs = speechSynthesis.getVoices();
+  enVoice = vs.find(v => /^en[-_](US|GB)/i.test(v.lang)) || vs.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+}
+if (canSpeak){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text){
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\//g, ', '));
+  u.lang = 'en-US';
+  if (enVoice){ u.voice = enVoice; u.lang = enVoice.lang; }
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+const speakBtn = (onclick, mini) => canSpeak
+  ? `<button type="button" class="speak-btn ${mini?'mini':''}" onclick="${onclick}" aria-label="Écouter en anglais">🔊</button>` : '';
 
 /* ---------- Comparaison tolérante ---------- */
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -123,38 +157,63 @@ const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''
 const accepted = val => norm(val).split(/[\/,]/).map(s => s.trim()).filter(Boolean);
 const isCorrect = (input, expected) => accepted(expected).includes(norm(input));
 
-/* ---------- Quiz ---------- */
-let pool = [], idx = 0, score = 0, total = 0, streak = 0, answered = false, current = null;
+/* ---------- Répétition espacée (boîtes de Leitner) ---------- */
+const DAY = 864e5;
+const GAPS = [0, 1, 3, 7, 14];          // jours avant la prochaine révision, selon la boîte (0 à 4)
+let srs = store.get('srs', {});          // { base: { box, due } }
+const entry = v => srs[v.base] || { box: 0, due: 0 };
+const dueList = () => verbsData.filter(v => entry(v).due <= Date.now());
 
-function buildSelect(){
-  document.getElementById('pool-select').innerHTML =
-    `<option value="all">Tous les verbes (${verbsData.length})</option><option value="missed">🔁 Mes erreurs</option>`;
+let mode = 'srs', current = null, givenKey = 'base';
+let score = 0, total = 0, streak = 0, answered = false, retry = [];
+
+function pickNext(){
+  // 1. un verbe raté plus tôt revient après 3 questions
+  const r = retry.findIndex(x => x.at <= total);
+  if (r >= 0){
+    const b = retry.splice(r, 1)[0].base;
+    return verbsData.find(v => v.base === b);
+  }
+  // 2. sinon : les verbes dus, les moins bien maîtrisés en priorité
+  let list = mode === 'srs' ? dueList() : verbsData;
+  if (!list.length) list = [...verbsData].sort((a,b) => entry(a).due - entry(b).due).slice(0, 5);
+  const others = list.filter(v => !current || v.base !== current.base);
+  if (others.length) list = others;
+  const weights = list.map(v => mode === 'srs' ? 5 - entry(v).box : 1);
+  let n = Math.random() * weights.reduce((a,b) => a + b, 0);
+  for (let i = 0; i < list.length; i++){ n -= weights[i]; if (n <= 0) return list[i]; }
+  return list[list.length - 1];
 }
 
-const shuffle = a => { a = [...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+function record(ok){
+  const e = entry(current);
+  const box = ok ? Math.min(e.box + 1, GAPS.length - 1) : 0;
+  srs[current.base] = { box, due: Date.now() + GAPS[box] * DAY };
+  store.set('srs', srs);
+  if (!ok && !retry.some(x => x.base === current.base)) retry.push({ base: current.base, at: total + 3 });
+}
 
+/* ---------- Quiz ---------- */
 function initQuiz(){
-  const choice = document.getElementById('pool-select').value;
-  let list = verbsData;
-  if (choice === 'missed') list = verbsData.filter(v => missed.has(v.base));
-  if (!list.length) { list = verbsData; document.getElementById('pool-select').value = 'all'; }
-  pool = shuffle(list); idx = 0; score = 0; total = 0; streak = 0;
+  mode = document.getElementById('mode-select').value;
+  score = 0; total = 0; streak = 0; retry = []; current = null;
   loadQuestion();
 }
 
 function loadQuestion(){
-  if (idx >= pool.length){ pool = shuffle(pool); idx = 0; }
-  current = pool[idx]; answered = false;
-  const givenKey = keys[Math.floor(Math.random()*keys.length)];
+  current = pickNext(); answered = false;
+  givenKey = keys[Math.floor(Math.random() * keys.length)];
   document.getElementById('q-prompt-text').textContent = `À partir de [ ${meta[givenKey]} ], trouve les 3 autres :`;
   document.getElementById('q-given-box').textContent = current[givenKey];
+  document.getElementById('speak-given').style.display = (canSpeak && givenKey !== 'french') ? '' : 'none';
   document.getElementById('quiz-inputs-container').innerHTML = keys.filter(k => k !== givenKey).map(k => `
     <div class="input-group">
       <label for="in-${k}">${meta[k]}</label>
       <input id="in-${k}" type="text" class="quiz-target-input" data-key="${k}" placeholder="Entrer ${meta[k].toLowerCase()}..." autocomplete="off" autocapitalize="none" spellcheck="false" oninput="updateSubmit()">
       <div class="answer"></div>
     </div>`).join('');
-  document.getElementById('q-feedback').textContent = '';
+  const fb = document.getElementById('q-feedback');
+  fb.innerHTML = (mode === 'srs' && !dueList().length) ? '<div class="note">🎉 Tout est à jour : révision libre</div>' : '';
   document.getElementById('submit-btn').disabled = true;
   document.getElementById('next-btn').disabled = true;
   updateStats();
@@ -164,8 +223,11 @@ function loadQuestion(){
 function updateStats(){
   document.getElementById('score-text').textContent = `Score : ${score} / ${total}`;
   document.getElementById('streak-text').textContent = `🔥 Série : ${streak}`;
-  document.getElementById('progress-text').textContent = `Verbe ${idx+1} / ${pool.length}`;
+  document.getElementById('due-text').textContent = `📌 À revoir : ${dueList().length}`;
 }
+
+const speakGiven = () => speak(current[givenKey]);
+const speakAll = () => speak(`${current.base}. ${current.preterit}. ${current.participle}.`);
 
 function updateSubmit(){
   const all = [...document.querySelectorAll('.quiz-target-input')].every(i => i.value.trim());
@@ -182,25 +244,28 @@ function checkAnswer(){
     if (!ok){ allOk = false; inp.parentElement.querySelector('.answer').textContent = `Attendu : ${current[k]}`; }
   });
   total++;
-  const fb = document.getElementById('q-feedback');
-  if (allOk){ score++; streak++; missed.delete(current.base); fb.innerHTML = '<span class="ok-text">✅ Bravo ! Tout est correct.</span>'; }
-  else { streak = 0; missed.add(current.base); fb.innerHTML = '<span class="ko-text">❌ Pas tout à fait, regarde les corrections.</span>'; }
-  store.set('missed', [...missed]);
+  if (allOk){ score++; streak++; } else { streak = 0; }
+  record(allOk);
+  document.getElementById('q-feedback').innerHTML = (allOk
+    ? '<span class="ok-text">✅ Bravo ! Tout est correct.</span>'
+    : '<span class="ko-text">❌ Pas tout à fait, il reviendra bientôt.</span>')
+    + (canSpeak ? '<button type="button" class="speak-btn" onclick="speakAll()">🔊 Écouter les 3 formes</button>' : '');
   updateStats();
   document.getElementById('submit-btn').disabled = true;
   const next = document.getElementById('next-btn'); next.disabled = false; next.focus();
 }
 
-function nextQuestion(){ idx++; loadQuestion(); }
+function nextQuestion(){ loadQuestion(); }
 
 function resetStats(){
-  if (!confirm("Effacer le score et la liste des erreurs ?")) return;
-  missed.clear(); store.set('missed', []); initQuiz();
+  if (!confirm("Effacer toute ta progression ?")) return;
+  srs = {}; store.set('srs', srs); initQuiz();
 }
 
 /* Entrée = valider / suivant */
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' || !document.getElementById('quiz-section').classList.contains('active')) return;
+  if (e.target.closest('.speak-btn')) return;
   if (!answered){ if (!document.getElementById('submit-btn').disabled) checkAnswer(); }
   else if (e.target.id !== 'next-btn') nextQuestion();
 });
@@ -232,17 +297,22 @@ function toggleColumn(i){
 function renderTables(){
   const q = norm(document.getElementById('search-input').value);
   const container = document.getElementById('tables-container');
-  const list = verbsData.filter(v => keys.some(k => norm(v[k]).includes(q)));
-  container.innerHTML = list.length ? list.map(v => `
+  const list = verbsData.map((v,n) => [v,n]).filter(([v]) => keys.some(k => norm(v[k]).includes(q)));
+  container.innerHTML = list.length ? list.map(([v,n]) => `
     <div class="verb-grid-card">${keys.map((k,i) => `
       <div class="verb-cell">
-        <div class="cell-label">${meta[k]}</div>
+        <div class="cell-label">${meta[k]}${k !== 'french' ? speakBtn(`speak(verbsData[${n}].${k})`, true) : ''}</div>
         <div class="cell-value ${hiddenCols[i] ? 'hidden-text' : ''}" ${hiddenCols[i] ? 'onclick="this.classList.remove(\'hidden-text\')" title="Cliquer pour révéler"' : ''}>${v[k]}</div>
       </div>`).join('')}
     </div>`).join('') : '<p class="empty">Aucun verbe trouvé.</p>';
 }
 
-buildSelect(); buildControls(); initQuiz();
+buildControls(); initQuiz();
+
+/* ---------- PWA ---------- */
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
