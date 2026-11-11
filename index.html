@@ -135,44 +135,46 @@
             margin-bottom: 6px;
         }
 
-        .quiz-verb-display {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 16px;
-            word-break: break-word;
-        }
-
-        .quiz-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
+        .quiz-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: #e2e8f0;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
             text-align: left;
         }
 
-        .input-group label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--text-muted);
+        .quiz-info-item span {
+            font-weight: 700;
+            color: var(--text-main);
         }
 
-        .input-group input {
+        .quiz-input-container {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .quiz-input-container label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+
+        .quiz-input-container input {
+            width: 100%;
             padding: 14px;
             border: 2px solid var(--border);
             border-radius: 10px;
-            font-size: 1rem; /* 16px pour éviter le zoom iOS */
+            font-size: 1rem;
             outline: none;
-            width: 100%;
         }
 
-        .input-group input:focus {
+        .quiz-input-container input:focus {
             border-color: var(--primary);
         }
 
@@ -189,8 +191,9 @@
             touch-action: manipulation;
         }
 
-        .btn:active {
-            transform: scale(0.98);
+        .btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
         }
 
         .quiz-feedback {
@@ -203,7 +206,7 @@
         .feedback-correct { color: var(--success); }
         .feedback-incorrect { color: var(--error); }
 
-        /* Mode Liste */
+        /* Mode Liste (Style Tableau par Cases Mobile) */
         .search-bar {
             width: 100%;
             padding: 12px;
@@ -253,28 +256,38 @@
             padding-left: 8px;
         }
 
-        /* Cartes pour affichage mobile */
-        .verb-card-mobile {
+        /* Grille en cases bien distinctes pour téléphone */
+        .verb-grid-card {
             background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .verb-cell {
+            background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
         }
 
-        .verb-card-mobile .base-part {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-main);
-        }
-
-        .verb-card-mobile .details-part {
-            text-align: right;
-            font-size: 0.85rem;
+        .verb-cell .cell-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
             color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .verb-cell .cell-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
         .hidden-text {
@@ -282,7 +295,6 @@
             color: transparent !important;
             border-radius: 4px;
             user-select: none;
-            padding: 0 4px;
         }
     </style>
 </head>
@@ -295,8 +307,8 @@
 
     <div class="container">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('quiz')">🎯 Quiz</button>
-            <button class="tab-btn" onclick="switchTab('list')">📖 Liste</button>
+            <button class="tab-btn active" onclick="switchTab('quiz')">🎯 Quiz Aléatoire</button>
+            <button class="tab-btn" onclick="switchTab('list')">📖 Liste en Cases</button>
         </div>
 
         <!-- SECTION QUIZ -->
@@ -308,24 +320,22 @@
 
             <div class="quiz-card">
                 <div class="quiz-category" id="q-category">Catégorie</div>
-                <div class="quiz-prompt">Traduire et conjuguer :</div>
-                <div class="quiz-verb-display" id="q-base">Base Verbale</div>
-
-                <div class="quiz-inputs">
-                    <div class="input-group">
-                        <label for="input-preterit">Prétérit</label>
-                        <input type="text" id="input-preterit" placeholder="ex: went" autocomplete="off" autocapitalize="none">
-                    </div>
-                    <div class="input-group">
-                        <label for="input-participe">Participe Passé</label>
-                        <input type="text" id="input-participe" placeholder="ex: gone" autocomplete="off" autocapitalize="none">
-                    </div>
+                <div class="quiz-prompt">Trouve l'élément manquant :</div>
+                
+                <!-- Infos fixes affichées pour aider -->
+                <div class="quiz-info-grid" id="q-info-grid">
+                    <!-- Rempli par JS -->
                 </div>
 
-                <button class="btn" id="submit-btn" onclick="checkAnswer()">Valider</button>
+                <div class="quiz-input-container">
+                    <label id="q-input-label">Champ à remplir</label>
+                    <input type="text" id="quiz-input" placeholder="Tape ta réponse..." autocomplete="off" autocapitalize="none" oninput="validateInputReady()">
+                </div>
+
+                <button class="btn" id="submit-btn" onclick="checkAnswer()" disabled>Valider</button>
                 <div class="quiz-feedback" id="q-feedback"></div>
             </div>
-            <button class="btn" style="background:#64748b;" onclick="nextQuestion()">Passer ➔</button>
+            <button class="btn" id="next-btn" style="background:#64748b;" onclick="nextQuestion()" disabled>Suivant ➔</button>
         </div>
 
         <!-- SECTION LISTE -->
@@ -333,6 +343,7 @@
             <input type="text" class="search-bar" id="search-input" placeholder="🔍 Rechercher un verbe..." onkeyup="filterTable()">
             
             <div class="controls-row">
+                <button class="toggle-col-btn" id="btn-col-0" onclick="toggleColumn(0)">Masquer Base</button>
                 <button class="toggle-col-btn" id="btn-col-1" onclick="toggleColumn(1)">Masquer Prétérit</button>
                 <button class="toggle-col-btn" id="btn-col-2" onclick="toggleColumn(2)">Masquer Participe</button>
                 <button class="toggle-col-btn" id="btn-col-3" onclick="toggleColumn(3)">Masquer Traduction</button>
@@ -378,7 +389,15 @@
         let score = 0;
         let totalAnswered = 0;
         let shuffledVerbs = [];
-        let hiddenCols = { 1: false, 2: false, 3: false };
+        let currentTargetKey = '';
+        let hiddenCols = { 0: false, 1: false, 2: false, 3: false };
+
+        const fieldLabels = {
+            base: "Base Verbale",
+            preterit: "Prétérit",
+            participle: "Participe Passé",
+            french: "Traduction"
+        };
 
         function initQuiz() {
             shuffledVerbs = [...verbsData].sort(() => Math.random() - 0.5);
@@ -395,37 +414,66 @@
             }
             const v = shuffledVerbs[currentQuizIndex];
             document.getElementById('q-category').innerText = v.category;
-            document.getElementById('q-base').innerText = `${v.base} (${v.french})`;
-            document.getElementById('input-preterit').value = '';
-            document.getElementById('input-participe').value = '';
+
+            // Choisir aléatoirement l'un des 4 champs à deviner
+            const keys = ['base', 'preterit', 'participle', 'french'];
+            currentTargetKey = keys[Math.floor(Math.random() * keys.length)];
+
+            document.getElementById('q-input-label').innerText = `Trouver : ${fieldLabels[currentTargetKey]}`;
+            
+            // Afficher les 3 autres champs dans la grille d'aide
+            let gridHtml = '';
+            keys.forEach(k => {
+                if (k !== currentTargetKey) {
+                    gridHtml += `<div class="quiz-info-item">${fieldLabels[k]} : <br><span>${v[k]}</span></div>`;
+                }
+            });
+            document.getElementById('q-info-grid').innerHTML = gridHtml;
+
+            const inputEl = document.getElementById('quiz-input');
+            inputEl.value = '';
+            inputEl.disabled = false;
             document.getElementById('q-feedback').innerText = '';
             document.getElementById('progress-text').innerText = `${currentQuizIndex + 1}/${shuffledVerbs.length}`;
             document.getElementById('score-text').innerText = `Score : ${score} / ${totalAnswered}`;
-            document.getElementById('submit-btn').innerText = "Valider";
-            document.getElementById('submit-btn').setAttribute("onclick", "checkAnswer()");
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = "Valider";
+            submitBtn.disabled = true;
+            submitBtn.setAttribute("onclick", "checkAnswer()");
+            
+            document.getElementById('next-btn').disabled = true;
+        }
+
+        function validateInputReady() {
+            const val = document.getElementById('quiz-input').value.trim();
+            document.getElementById('submit-btn').disabled = (val.length === 0);
         }
 
         function checkAnswer() {
             const v = shuffledVerbs[currentQuizIndex];
-            const pInput = document.getElementById('input-preterit').value.trim().toLowerCase();
-            const partInput = document.getElementById('input-participe').value.trim().toLowerCase();
-
-            const isPValid = v.preterit.toLowerCase().includes(pInput) && pInput.length > 0;
-            const isPartValid = v.participle.toLowerCase().includes(partInput) && partInput.length > 0;
+            const inputVal = document.getElementById('quiz-input').value.trim().toLowerCase();
+            const correctVal = v[currentTargetKey].toLowerCase();
 
             totalAnswered++;
+            const isCorrect = correctVal.includes(inputVal) && inputVal.length > 0;
             const feedbackEl = document.getElementById('q-feedback');
 
-            if (isPValid && isPartValid) {
+            if (isCorrect) {
                 score++;
-                feedbackEl.innerHTML = `<span class="feedback-correct">✅ Bravo ! Parfait.</span>`;
+                feedbackEl.innerHTML = `<span class="feedback-correct">✅ Bravo ! C'est exact.</span>`;
             } else {
-                feedbackEl.innerHTML = `<span class="feedback-incorrect">❌ ${v.preterit} / ${v.participle}</span>`;
+                feedbackEl.innerHTML = `<span class="feedback-incorrect">❌ Faux. Réponse attendue : <b>${v[currentTargetKey]}</b></span>`;
             }
 
             document.getElementById('score-text').innerText = `Score : ${score} / ${totalAnswered}`;
-            document.getElementById('submit-btn').innerText = "Suivant ➔";
-            document.getElementById('submit-btn').setAttribute("onclick", "nextQuestion()");
+            document.getElementById('quiz-input').disabled = true;
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+
+            // Débloquer le bouton suivant
+            document.getElementById('next-btn').disabled = false;
         }
 
         function nextQuestion() {
@@ -474,13 +522,23 @@
 
                 catVerbs.forEach(v => {
                     const card = document.createElement('div');
-                    card.className = 'verb-card-mobile';
+                    card.className = 'verb-grid-card';
                     card.innerHTML = `
-                        <div class="base-part">${v.base}</div>
-                        <div class="details-part">
-                            <div><small>Prét:</small> <span class="${hiddenCols[1] ? 'hidden-text' : ''}">${v.preterit}</span></div>
-                            <div><small>Part:</small> <span class="${hiddenCols[2] ? 'hidden-text' : ''}">${v.participle}</span></div>
-                            <div><small>FR:</small> <span class="${hiddenCols[3] ? 'hidden-text' : ''}">${v.french}</span></div>
+                        <div class="verb-cell">
+                            <div class="cell-label">Base Verbale</div>
+                            <div class="cell-value ${hiddenCols[0] ? 'hidden-text' : ''}">${v.base}</div>
+                        </div>
+                        <div class="verb-cell">
+                            <div class="cell-label">Prétérit</div>
+                            <div class="cell-value ${hiddenCols[1] ? 'hidden-text' : ''}">${v.preterit}</div>
+                        </div>
+                        <div class="verb-cell">
+                            <div class="cell-label">Participe Passé</div>
+                            <div class="cell-value ${hiddenCols[2] ? 'hidden-text' : ''}">${v.participle}</div>
+                        </div>
+                        <div class="verb-cell">
+                            <div class="cell-label">Traduction</div>
+                            <div class="cell-value ${hiddenCols[3] ? 'hidden-text' : ''}">${v.french}</div>
                         </div>
                     `;
                     groupDiv.appendChild(card);
