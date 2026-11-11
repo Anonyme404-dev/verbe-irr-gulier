@@ -1,1 +1,0 @@
-# verbe-irr-gulier
