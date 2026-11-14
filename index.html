@@ -18,8 +18,12 @@ body{background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-
 header{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;width:100%;max-width:700px;margin:6px 0 18px;text-align:center}
 h1{font-size:clamp(1.3rem,5.5vw,1.8rem);color:var(--primary);font-weight:700;line-height:1.2}
 .subtitle{color:var(--muted);font-size:.9rem}
-.gear{grid-column:3;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--primary);cursor:pointer;display:grid;place-items:center}
-.gear svg{width:22px;height:22px}
+.gear{grid-column:3}
+.acc{grid-column:1;position:relative}
+.gear,.acc{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--primary);cursor:pointer;display:grid;place-items:center}
+.gear svg,.acc svg{width:22px;height:22px}
+.acc .dot{position:absolute;top:7px;right:7px;width:11px;height:11px;border-radius:50%;background:var(--success);border:2px solid var(--card)}
+.acc .dot[hidden]{display:none}
 .container{width:100%;max-width:700px;background:var(--card);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:20px}
 @media(min-width:600px){.container{padding:24px}}
 .tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--tab);padding:4px;border-radius:10px}
@@ -51,6 +55,7 @@ select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--prima
 .btn.link:hover:not(:disabled){background:var(--tab);color:var(--error)}
 .btn.small{padding:10px;font-size:.9rem;margin-top:10px}
 .speak-btn{background:var(--tab);border:none;border-radius:20px;padding:6px 12px;font-size:1rem;cursor:pointer;color:var(--text)}
+.speak-btn.mini{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:.75rem}
 body.no-speech .speak-btn{display:none!important}
 .quiz-feedback{margin-top:14px;font-weight:600;min-height:24px}
 .quiz-feedback .speak-btn{display:block;margin:10px auto 0;font-size:.9rem}
@@ -82,28 +87,42 @@ body.no-speech .hint{display:none}
 .vhead{position:sticky;top:0;z-index:1;background:var(--tab)!important;font-size:.7rem;text-transform:uppercase;font-weight:700;color:var(--muted)}
 .vhead .fr{display:none}
 .vcell{font-weight:700;font-size:.92rem;overflow-wrap:anywhere;min-height:22px}
-.vcell.en{cursor:pointer;padding:2px 6px;margin:-2px -6px;border-radius:6px}
-body.no-speech .vcell.en{cursor:default}
-@media(hover:hover){body:not(.no-speech) .vcell.en:hover{background:var(--tab)}}
-body:not(.no-speech) .vcell.en:active{background:var(--tab)}
 .vcell.fr{grid-column:1/-1;font-weight:400;color:var(--muted);font-size:.85rem}
 .hidden-text{display:inline-block;min-width:60%;background:var(--border);color:transparent!important;border-radius:4px;user-select:none;cursor:pointer}
 @media(min-width:600px){.vrow{grid-template-columns:1fr 1fr 1fr 1.5fr}.vcell.fr{grid-column:auto;font-size:.92rem}.vhead .fr{display:block}}
-.az{display:none}
+.az{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.az:empty,body.no-letters .az{display:none}
+.az button{flex:none;width:34px;height:34px;border:none;border-radius:50%;background:var(--tab);color:var(--text);font:inherit;font-weight:700;font-size:.85rem;cursor:pointer}
 body.no-speech #voice-block{display:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--border);background:var(--card);color:var(--text);font:inherit;font-weight:600;font-size:.88rem;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.chip.active{background:#4f46e5;border-color:#4f46e5;color:#fff}
+.chip.plus{width:40px;padding:8px 0;font-size:1.15rem;line-height:1;color:var(--primary);border-style:dashed}
+.list-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.85rem;color:var(--muted);font-weight:600}
+.list-actions span{flex:1}
+.mini-btn{border:none;background:var(--tab);color:var(--text);font:inherit;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer}
+.picker{max-height:38dvh;overflow:auto;border:1px solid var(--border);border-radius:10px;margin:8px 0 12px}
+.pick{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer}
+.pick:last-child{border-bottom:none}
+.pick input{width:20px;height:20px;accent-color:#4f46e5;flex:none}
+.pick span{margin-left:auto;text-align:right;color:var(--muted);font-size:.8rem}
+.pick-top{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--muted);font-weight:600}
+.pick-top .btn{width:auto;padding:4px 8px;margin:0}
+.err{color:var(--error);font-size:.85rem;min-height:1.3em;margin-bottom:4px}
+.note-p{color:var(--muted);font-size:.9rem;margin-bottom:12px}
+.vlist{border:1px solid var(--border);border-radius:12px;overflow:clip}
+@media(min-width:600px){.vcell .speak-btn{display:none!important}}
 @media(max-width:599px){
-  .az{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;z-index:3;background:var(--card);padding:8px 0;margin-bottom:6px;scrollbar-width:none}
-  .az:empty{display:none}
+  .az{flex-wrap:nowrap;overflow-x:auto;position:sticky;top:0;z-index:3;background:var(--card);padding:8px 0;scrollbar-width:none}
   .az::-webkit-scrollbar{display:none}
-  .az button{flex:none;width:34px;height:34px;border:none;border-radius:50%;background:var(--tab);color:var(--text);font:inherit;font-weight:700;font-size:.85rem;cursor:pointer}
-  .vlist{border:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:10px}
+  .vlist{border:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:12px}
   .vrow.vhead{display:none}
-  .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:12px 14px;border:1px solid var(--border)!important;border-radius:14px;background:var(--soft)!important;scroll-margin-top:64px}
-  .vcell.c-base{order:1;flex:0 1 auto;max-width:100%;font-size:1.2rem;color:var(--primary)}
-  .vcell.c-preterit{order:3;flex:1 1 calc(50% - 6px)}
-  .vcell.c-participle{order:4;flex:1 1 calc(50% - 6px)}
-  .vcell.fr{order:2;flex:1 1 40%;min-width:40%;text-align:right}
-  .vcell.c-preterit::before,.vcell.c-participle::before{content:attr(data-label);display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-bottom:2px}
+  .vrow{grid-template-columns:1fr 1fr;align-items:stretch;gap:10px;padding:12px;border:2px solid var(--border)!important;border-radius:12px;background:var(--soft)!important;scroll-margin-top:64px}
+  .vcell{position:relative;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 8px;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:1rem;overflow-wrap:break-word}
+  .vcell::before{content:attr(data-label);font-size:.7rem;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+  .vcell.en::before{align-self:stretch;padding:0 22px}
+  .vcell.fr{grid-column:auto;color:var(--text);font-weight:700;font-size:.92rem}
 }
 dialog{margin:auto;width:min(92vw,400px);border:1px solid var(--border);border-radius:16px;padding:22px;background:var(--card);color:var(--text)}
 dialog::backdrop{background:rgba(15,23,42,.5)}
@@ -122,7 +141,10 @@ dialog .btn{margin-top:12px}
 </head>
 <body>
 <header>
-  <div></div>
+  <button class="acc" onclick="openAccount()" aria-label="Compte">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="dot" id="acc-dot" hidden></span>
+  </button>
   <div><h1>Verbes Irréguliers</h1><p class="subtitle">Espace de révision interactif</p></div>
   <button class="gear" onclick="openSettings()" aria-label="Paramètres">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -136,6 +158,7 @@ dialog .btn{margin-top:12px}
   </div>
 
   <section id="quiz-section" class="section-view active">
+    <div class="chips" id="chips-quiz"></div>
     <div class="seg" id="mode-seg" role="group" aria-label="Mode de révision">
       <button type="button" data-v="srs" class="active" onclick="setMode('srs')">🧠 Répétition espacée</button>
       <button type="button" data-v="all" onclick="setMode('all')">🎲 Au hasard</button>
@@ -156,6 +179,8 @@ dialog .btn{margin-top:12px}
   </section>
 
   <section id="list-section" class="section-view">
+    <div class="chips" id="chips-list"></div>
+    <div id="list-actions"></div>
     <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher..." oninput="renderTables()">
     <div class="controls-row" id="controls-row"></div>
     <p class="hint">👆 Touche un mot anglais pour l'écouter</p>
@@ -173,6 +198,10 @@ dialog .btn{margin-top:12px}
   <div class="setting">
     <div>Écouter les 3 formes<small>Affiché après chaque réponse du quiz</small></div>
     <label class="switch"><input type="checkbox" id="set-listenall" onchange="setSetting('listenAll', this.checked)"><i></i></label>
+  </div>
+  <div class="setting">
+    <div>Barre de lettres A–Z<small>Dans le mode liste</small></div>
+    <label class="switch"><input type="checkbox" id="set-letters" onchange="setSetting('letters', this.checked)"><i></i></label>
   </div>
   <div class="setting col" id="voice-block">
     <div>Voix anglaise<small id="voice-info"></small></div>
@@ -193,6 +222,23 @@ dialog .btn{margin-top:12px}
   </div>
   <button class="btn link" onclick="resetStats()">🗑️ Réinitialiser ma progression</button>
   <button class="btn" onclick="document.getElementById('settings').close()">Fermer</button>
+</dialog>
+
+<dialog id="list-editor">
+  <h2 id="le-title">Nouvelle liste</h2>
+  <input id="le-name" class="search-bar" type="text" maxlength="30" placeholder="Nom de la liste (ex : Leçon 1)" autocomplete="off">
+  <input id="le-search" class="search-bar" type="search" placeholder="🔍 Chercher un verbe..." oninput="renderPicker()">
+  <div class="pick-top"><span id="le-count"></span><button type="button" class="btn link" onclick="clearPicker()">Tout décocher</button></div>
+  <div class="picker" id="le-picker"></div>
+  <div class="err" id="le-error"></div>
+  <button class="btn" onclick="saveList()">Enregistrer</button>
+  <button class="btn link" onclick="document.getElementById('list-editor').close()">Annuler</button>
+</dialog>
+
+<dialog id="account">
+  <h2>👤 Compte</h2>
+  <div id="account-body"></div>
+  <button class="btn" onclick="document.getElementById('account').close()">Fermer</button>
 </dialog>
 
 <script>
@@ -386,6 +432,20 @@ Withhold|Withheld|Withheld|Retenir
 Withstand|Withstood|Withstood|Résister à
 Wring|Wrung|Wrung|Tordre, essorer
 Write|Wrote|Written|Écrire`;
+/* ============ COMPTES EN LIGNE (facultatif) ============
+   Sans configuration, les listes sont enregistrées sur l'appareil.
+   Pour activer les comptes (listes synchronisées partout) :
+   1. console.firebase.google.com > créer un projet gratuit
+   2. Authentication > Sign-in method > activer « E-mail/Mot de passe »
+   3. Firestore Database > créer la base, puis onglet Règles :
+        rules_version = '2';
+        service cloud.firestore { match /databases/{db}/documents {
+          match /users/{uid} { allow read, write: if request.auth != null && request.auth.uid == uid; } } }
+   4. Paramètres du projet > Vos applications > Web (</>) > copier la config ci-dessous :
+        const FIREBASE_CONFIG = { apiKey: "...", authDomain: "...", projectId: "...", appId: "..." };
+   5. Authentication > Paramètres > Domaines autorisés : ajouter anonyme404-dev.github.io */
+const FIREBASE_CONFIG = null;
+
 const verbsData = RAW.split('\n').map(l => { const [base,preterit,participle,french] = l.split('|'); return {base,preterit,participle,french}; })
   .sort((a,b) => a.base.localeCompare(b.base));
 
@@ -401,7 +461,7 @@ const store = {
   del(k){ try { localStorage.removeItem(k); } catch {} }
 };
 let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
-let settings = Object.assign({speech:true, listenAll:false, accent:'auto', theme:'auto'}, store.get('settings', {}));
+let settings = Object.assign({speech:true, listenAll:false, letters:false, accent:'auto', theme:'auto'}, store.get('settings', {}));
 
 /* ---------- Paramètres ---------- */
 const canSpeak = 'speechSynthesis' in window;
@@ -409,6 +469,7 @@ const syncSeg = (id, val) => document.querySelectorAll('#'+id+' button').forEach
 function applySettings(){
   document.body.classList.toggle('no-speech', !settings.speech || !canSpeak);
   document.body.classList.toggle('no-listenall', !settings.listenAll);
+  document.body.classList.toggle('no-letters', !settings.letters);
   if (settings.theme === 'auto') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = settings.theme;
   syncSeg('theme-seg', settings.theme);
@@ -419,6 +480,7 @@ function openSettings(){
   const sp = document.getElementById('set-speech'), la = document.getElementById('set-listenall');
   sp.checked = settings.speech && canSpeak; sp.disabled = !canSpeak;
   la.checked = settings.listenAll; la.disabled = !canSpeak;
+  document.getElementById('set-letters').checked = settings.letters;
   document.getElementById('speech-note').textContent = canSpeak ? 'Prononciation en anglais' : 'Non disponible sur ce navigateur';
   pickVoice();
   document.getElementById('settings').showModal();
@@ -466,19 +528,26 @@ const DAY = 864e5;
 const GAPS = [0, 1, 3, 7, 14];
 let srs = store.get('srs', {});
 const entry = v => srs[v.base] || { box: 0, due: 0 };
-const dueList = () => verbsData.filter(v => entry(v).due <= Date.now());
+let lists = store.get('lists', []);
+let quizList = 'all', viewList = 'all';
+const listById = id => lists.find(l => l.id === id);
+function poolVerbs(){ const l = listById(quizList); return l ? verbsData.filter(v => l.bases.includes(v.base)) : verbsData; }
+const dueList = () => poolVerbs().filter(v => entry(v).due <= Date.now());
 
 let mode = 'srs', current = null, givenKey = 'base', tab = 'quiz';
 let score = 0, total = 0, streak = 0, answered = false, retry = [];
+let lastRetry = false;
 
 function pickNext(){
-  const r = retry.findIndex(x => x.at <= total);
+  const r = lastRetry ? -1 : retry.findIndex(x => x.at <= total);
   if (r >= 0){
+    lastRetry = true;
     const b = retry.splice(r, 1)[0].base;
     return verbsData.find(v => v.base === b);
   }
-  let list = mode === 'srs' ? dueList() : verbsData;
-  if (!list.length) list = [...verbsData].sort((a,b) => entry(a).due - entry(b).due).slice(0, 5);
+  lastRetry = false;
+  let list = mode === 'srs' ? dueList() : poolVerbs();
+  if (!list.length) list = [...poolVerbs()].sort((a,b) => entry(a).due - entry(b).due).slice(0, 5);
   const others = list.filter(v => !current || v.base !== current.base);
   if (others.length) list = others;
   const weights = list.map(v => mode === 'srs' ? 5 - entry(v).box : 1);
@@ -499,13 +568,14 @@ function record(ok){
 const getVals = () => Object.fromEntries([...document.querySelectorAll('.quiz-target-input')].map(i => [i.dataset.key, i.value]));
 function saveSession(){
   if (!current) return;
-  store.set('session', { mode, score, total, streak, retry, cur: current.base, givenKey, answered, vals: getVals(), tab });
+  store.set('session', { mode, score, total, streak, retry, cur: current.base, givenKey, answered, vals: getVals(), tab, quizList });
 }
 function restoreSession(){
   const s = store.get('session', null);
   const v = s && verbsData.find(x => x.base === s.cur);
   if (!v || !keys.includes(s.givenKey)) return initQuiz();
   mode = s.mode === 'all' ? 'all' : 'srs';
+  quizList = listById(s.quizList) ? s.quizList : 'all';
   syncMode();
   score = s.score|0; total = s.total|0; streak = s.streak|0; retry = Array.isArray(s.retry) ? s.retry : [];
   current = v; givenKey = s.givenKey;
@@ -518,7 +588,7 @@ function restoreSession(){
 const syncMode = () => syncSeg('mode-seg', mode);
 function setMode(m){ if (m === mode) return; mode = m; syncMode(); initQuiz(); }
 function initQuiz(){
-  score = 0; total = 0; streak = 0; retry = []; current = null;
+  score = 0; total = 0; streak = 0; retry = []; current = null; lastRetry = false;
   loadQuestion();
 }
 
@@ -553,7 +623,8 @@ function updateStats(){
   document.getElementById('score-text').innerHTML = `<strong>${score} / ${total}</strong><small>Score</small>`;
   document.getElementById('streak-text').innerHTML = `<strong>🔥 ${streak}</strong><small>Série</small>`;
   document.getElementById('due-text').innerHTML = `<strong>📌 ${dueList().length}</strong><small>À revoir</small>`;
-  const m = Math.round(verbsData.reduce((a,v) => a + entry(v).box, 0) / (verbsData.length * (GAPS.length - 1)) * 100);
+  const P = poolVerbs();
+  const m = Math.round(P.reduce((a,v) => a + entry(v).box, 0) / (P.length * (GAPS.length - 1)) * 100);
   document.getElementById('mastery-text').textContent = `Maîtrise : ${m} %`;
   document.getElementById('mastery-bar').style.width = m + '%';
 }
@@ -605,8 +676,8 @@ function resetStats(){
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key !== 'Enter' || tab !== 'quiz' || document.getElementById('settings').open) return;
-  if (e.target.closest('.speak-btn, .gear')) return;
+  if (e.key !== 'Enter' || tab !== 'quiz' || document.querySelector('dialog[open]')) return;
+  if (e.target.closest('.speak-btn, .gear, .acc')) return;
   if (!answered){ if (!document.getElementById('submit-btn').disabled) checkAnswer(); }
   else if (e.target.id !== 'next-btn') nextQuestion();
 });
@@ -638,28 +709,169 @@ function toggleColumn(i){
 }
 
 function cellTap(el, n, k){
-  const span = el.firstElementChild;
+  const span = el.querySelector('span');
   if (span.classList.contains('hidden-text')){ span.classList.remove('hidden-text'); return; }
   if (k !== 'french') speak(verbsData[n][k]);
 }
 function jumpTo(l){ document.getElementById('L-' + l)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function renderTables(){
   const q = norm(document.getElementById('search-input').value);
-  const rows = verbsData.map((v,n) => [v,n]).filter(([v]) => keys.some(k => norm(v[k]).includes(q)));
+  const L = listById(viewList);
+  const rows = verbsData.map((v,n) => [v,n]).filter(([v]) => (!L || L.bases.includes(v.base)) && keys.some(k => norm(v[k]).includes(q)));
   const head = `<div class="vrow vhead">${keys.map(k => `<div class="${k === 'french' ? 'fr' : ''}">${short[k]}</div>`).join('')}</div>`;
   let last = '';
   const html = rows.map(([v,n]) => {
-    const L = v.base[0].toUpperCase();
-    const id = L !== last ? ` id="L-${L}"` : ''; last = L;
+    const l = v.base[0].toUpperCase();
+    const id = l !== last ? ` id="L-${l}"` : ''; last = l;
     return `<div class="vrow"${id}>${keys.map((k,i) =>
-      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} c-${k}" data-label="${short[k]}" onclick="cellTap(this,${n},'${k}')"><span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k]}</span></div>`).join('')}</div>`;
+      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} c-${k}" data-label="${short[k]}" onclick="cellTap(this,${n},'${k}')">${k !== 'french' ? '<button type="button" class="speak-btn mini" tabindex="-1" aria-label="Écouter">🔊</button>' : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k]}</span></div>`).join('')}</div>`;
   }).join('');
   document.getElementById('tables-container').innerHTML = rows.length ? `<div class="vlist">${head}${html}</div>` : '<p class="empty">Aucun verbe trouvé.</p>';
   document.getElementById('az').innerHTML = [...new Set(rows.map(([v]) => v.base[0].toUpperCase()))]
     .map(l => `<button type="button" onclick="jumpTo('${l}')">${l}</button>`).join('');
 }
 
-applySettings(); buildControls(); restoreSession();
+/* ---------- Listes personnalisées ---------- */
+function renderChips(){
+  for (const w of ['quiz','list']){
+    const cur = w === 'quiz' ? quizList : viewList;
+    document.getElementById('chips-' + w).innerHTML =
+      `<button type="button" class="chip plus" onclick="openListEditor()" aria-label="Créer une liste">＋</button>` +
+      `<button type="button" class="chip ${cur === 'all' ? 'active' : ''}" onclick="selectList('${w}','all')">Tous</button>` +
+      lists.map(l => `<button type="button" class="chip ${cur === l.id ? 'active' : ''}" onclick="selectList('${w}','${l.id}')">${esc(l.name)}</button>`).join('');
+  }
+  const L = listById(viewList);
+  document.getElementById('list-actions').innerHTML = L
+    ? `<div class="list-actions"><span>${L.bases.length} verbe${L.bases.length > 1 ? 's' : ''}</span><button type="button" class="mini-btn" onclick="openListEditor('${L.id}')">✏️ Modifier</button><button type="button" class="mini-btn" onclick="deleteList('${L.id}')">🗑️ Supprimer</button></div>` : '';
+}
+function selectList(w, id){
+  if (w === 'quiz'){ if (id === quizList) return; quizList = id; renderChips(); initQuiz(); }
+  else { viewList = id; renderChips(); renderTables(); }
+}
+function fixSelections(){
+  let quizLost = false;
+  if (quizList !== 'all' && !listById(quizList)){ quizList = 'all'; quizLost = true; }
+  if (viewList !== 'all' && !listById(viewList)) viewList = 'all';
+  return quizLost;
+}
+function persistLists(){ store.set('lists', lists); cloudSave(); renderChips(); }
+
+let editId = null, pickSel = new Set();
+function openListEditor(id){
+  editId = typeof id === 'string' ? id : null;
+  const l = editId && listById(editId);
+  document.getElementById('le-title').textContent = l ? 'Modifier la liste' : 'Nouvelle liste';
+  document.getElementById('le-name').value = l ? l.name : '';
+  document.getElementById('le-search').value = '';
+  document.getElementById('le-error').textContent = '';
+  pickSel = new Set(l ? l.bases : []);
+  renderPicker();
+  document.getElementById('list-editor').showModal();
+}
+const updatePickCount = () => { const n = pickSel.size; document.getElementById('le-count').textContent = `${n} verbe${n > 1 ? 's' : ''} sélectionné${n > 1 ? 's' : ''}`; };
+function renderPicker(){
+  const q = norm(document.getElementById('le-search').value);
+  document.getElementById('le-picker').innerHTML = verbsData.filter(v => !q || keys.some(k => norm(v[k]).includes(q)))
+    .map(v => `<label class="pick"><input type="checkbox" value="${esc(v.base)}" ${pickSel.has(v.base) ? 'checked' : ''}><b>${v.base}</b><span>${v.french}</span></label>`).join('');
+  updatePickCount();
+}
+document.getElementById('le-picker').addEventListener('change', e => {
+  const c = e.target; if (c.type !== 'checkbox') return;
+  c.checked ? pickSel.add(c.value) : pickSel.delete(c.value); updatePickCount();
+});
+function clearPicker(){ pickSel.clear(); renderPicker(); }
+function saveList(){
+  const name = document.getElementById('le-name').value.trim(), err = document.getElementById('le-error');
+  if (!name){ err.textContent = 'Donne un nom à ta liste.'; return; }
+  if (!pickSel.size){ err.textContent = 'Choisis au moins un verbe.'; return; }
+  const bases = verbsData.filter(v => pickSel.has(v.base)).map(v => v.base);
+  const existing = editId && listById(editId);
+  if (existing) Object.assign(existing, { name, bases });
+  else { editId = 'l' + Date.now().toString(36); lists.push({ id: editId, name, bases }); }
+  persistLists();
+  document.getElementById('list-editor').close();
+  if (tab === 'quiz'){ quizList = ''; selectList('quiz', editId); } else selectList('list', editId);
+}
+function deleteList(id){
+  const l = listById(id); if (!l || !confirm(`Supprimer la liste « ${l.name} » ?`)) return;
+  lists = lists.filter(x => x.id !== id);
+  const lost = fixSelections(); persistLists(); renderTables(); if (lost) initQuiz();
+}
+
+/* ---------- Compte (Firebase, facultatif) ---------- */
+const cloud = { ready: false, user: null, error: '' };
+let unsubCloud = null, firstSnap = true;
+async function initCloud(){
+  if (!FIREBASE_CONFIG) return;
+  try {
+    const base = 'https://www.gstatic.com/firebasejs/10.12.2/';
+    const [appM, A, F] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+    const app = appM.initializeApp(FIREBASE_CONFIG);
+    cloud.A = A; cloud.F = F; cloud.auth = A.getAuth(app); cloud.db = F.getFirestore(app);
+    A.onAuthStateChanged(cloud.auth, user => {
+      cloud.user = user; cloud.ready = true;
+      if (unsubCloud){ unsubCloud(); unsubCloud = null; }
+      if (user){ firstSnap = true; subscribeCloud(user); }
+      renderAccount();
+    });
+  } catch (e){ cloud.error = 'Connexion au service impossible (es-tu hors-ligne ?).'; renderAccount(); }
+}
+function subscribeCloud(user){
+  unsubCloud = cloud.F.onSnapshot(cloud.F.doc(cloud.db, 'users', user.uid), snap => {
+    const remote = snap.exists() && Array.isArray(snap.data().lists) ? snap.data().lists : [];
+    if (firstSnap){
+      firstSnap = false;
+      const ids = new Set(remote.map(l => l.id)), extra = lists.filter(l => !ids.has(l.id));
+      lists = [...remote, ...extra];
+      if (extra.length) cloudSave();
+    } else lists = remote;
+    store.set('lists', lists);
+    const lost = fixSelections(); renderChips(); renderTables(); if (lost) initQuiz();
+  }, () => {});
+}
+function cloudSave(){
+  if (!cloud.user) return;
+  cloud.F.setDoc(cloud.F.doc(cloud.db, 'users', cloud.user.uid), { lists, updatedAt: Date.now() }).catch(() => {});
+}
+const AUTH_ERRORS = {
+  'auth/invalid-email': 'E-mail invalide.', 'auth/weak-password': 'Mot de passe trop court (6 caractères minimum).',
+  'auth/email-already-in-use': 'Un compte existe déjà avec cet e-mail.', 'auth/network-request-failed': 'Pas de connexion internet.',
+  'auth/invalid-credential': 'E-mail ou mot de passe incorrect.', 'auth/wrong-password': 'E-mail ou mot de passe incorrect.',
+  'auth/user-not-found': 'E-mail ou mot de passe incorrect.', 'auth/too-many-requests': 'Trop d\'essais, réessaie plus tard.'
+};
+async function authSubmit(kind){
+  const email = document.getElementById('acc-email').value.trim(), pw = document.getElementById('acc-pw').value;
+  const err = document.getElementById('acc-err'); err.textContent = '';
+  if (!email || !pw){ err.textContent = 'Entre ton e-mail et ton mot de passe.'; return; }
+  try {
+    if (kind === 'up') await cloud.A.createUserWithEmailAndPassword(cloud.auth, email, pw);
+    else await cloud.A.signInWithEmailAndPassword(cloud.auth, email, pw);
+  } catch (e){ err.textContent = AUTH_ERRORS[e.code] || 'Une erreur est survenue, réessaie.'; }
+}
+async function signOutUser(){
+  await cloud.A.signOut(cloud.auth);
+  lists = []; store.set('lists', lists);
+  const lost = fixSelections(); renderChips(); renderTables(); if (lost) initQuiz();
+  document.getElementById('account').close();
+}
+function renderAccount(){
+  const box = document.getElementById('account-body');
+  document.getElementById('acc-dot').hidden = !cloud.user;
+  if (!FIREBASE_CONFIG && !cloud.ready)
+    box.innerHTML = '<p class="note-p">Les comptes en ligne ne sont pas encore activés. Tes listes sont enregistrées sur cet appareil.</p>';
+  else if (cloud.error) box.innerHTML = `<p class="err">${cloud.error}</p>`;
+  else if (!cloud.ready) box.innerHTML = '<p class="note-p">Chargement…</p>';
+  else if (cloud.user) box.innerHTML = `<p class="note-p">Connecté : <b>${esc(cloud.user.email || '')}</b><br>☁️ Tes listes sont synchronisées.</p><button class="btn secondary" onclick="signOutUser()">Se déconnecter</button>`;
+  else box.innerHTML = `<p class="note-p">Connecte-toi pour retrouver tes listes sur tous tes appareils.</p>
+    <input id="acc-email" class="search-bar" type="email" placeholder="E-mail" autocomplete="email">
+    <input id="acc-pw" class="search-bar" type="password" placeholder="Mot de passe (6 caractères min.)" autocomplete="current-password" onkeydown="if(event.key==='Enter')authSubmit('in')">
+    <div class="err" id="acc-err"></div>
+    <button class="btn" onclick="authSubmit('in')">Se connecter</button>
+    <button class="btn secondary" onclick="authSubmit('up')">Créer un compte</button>`;
+}
+function openAccount(){ renderAccount(); document.getElementById('account').showModal(); }
+
+applySettings(); buildControls(); restoreSession(); renderChips(); renderAccount(); initCloud();
 
 /* ---------- PWA ---------- */
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')){

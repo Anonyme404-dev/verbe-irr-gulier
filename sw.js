@@ -1,5 +1,5 @@
 // Change le numéro de version à chaque modification du site
-const CACHE = 'verbes-v4';
+const CACHE = 'verbes-v5';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
