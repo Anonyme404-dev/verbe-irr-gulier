@@ -38,8 +38,6 @@ select{margin-bottom:12px}
 select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--primary)}
 .quiz-card{background:var(--soft);border:2px solid var(--border);border-radius:14px;padding:20px 16px;text-align:center;margin-bottom:14px}
 .quiz-prompt{font-size:.92rem;color:var(--muted);margin-bottom:10px}
-.quiz-given-box{position:relative;background:#4f46e5;color:#fff;padding:14px 52px;border-radius:10px;font-size:1.5rem;font-weight:700;margin-bottom:18px;word-break:break-word}
-.quiz-given-box .speak-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);color:#fff}
 .quiz-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;text-align:left}
 .input-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;color:var(--primary)}
 .input-group input.ok{border-color:var(--success)}
@@ -50,8 +48,9 @@ select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--prima
 .btn:disabled{background:#94a3b8;color:#fff;cursor:not-allowed}
 .btn.secondary{background:#64748b}
 .btn.link{background:none;color:var(--muted);font-size:.85rem;padding:10px}
+.btn.link:hover:not(:disabled){background:var(--tab);color:var(--error)}
+.btn.small{padding:10px;font-size:.9rem;margin-top:10px}
 .speak-btn{background:var(--tab);border:none;border-radius:20px;padding:6px 12px;font-size:1rem;cursor:pointer;color:var(--text)}
-.speak-btn.mini{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:.75rem}
 body.no-speech .speak-btn{display:none!important}
 .quiz-feedback{margin-top:14px;font-weight:600;min-height:24px}
 .quiz-feedback .speak-btn{display:block;margin:10px auto 0;font-size:.9rem}
@@ -62,13 +61,50 @@ body.no-speech .speak-btn{display:none!important}
 @media(max-width:600px){.controls-row{grid-template-columns:1fr 1fr}}
 .toggle-col-btn{background:var(--tab);color:var(--text);border:none;padding:10px 6px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer}
 .toggle-col-btn.hidden-col{opacity:.6;text-decoration:line-through}
-.verb-grid-card{background:var(--soft);border:2px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-@media(max-width:600px){.verb-grid-card{grid-template-columns:1fr 1fr}}
-.verb-cell{position:relative;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 26px;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.cell-label{font-size:.7rem;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
-.cell-value{font-size:1rem;font-weight:700;word-break:break-word}
-.hidden-text{background:var(--border);color:transparent!important;border-radius:4px;cursor:pointer;user-select:none;min-width:60%}
 .empty{text-align:center;color:var(--muted);padding:20px}
+.seg{display:flex;gap:4px;background:var(--tab);padding:4px;border-radius:12px;margin-bottom:12px}
+.seg button{flex:1;border:none;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:.88rem;padding:10px 6px;border-radius:9px;cursor:pointer;line-height:1.25}
+.seg button.active{background:var(--card);color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.seg.small{margin:8px 0 0}
+.setting.col{flex-direction:column;align-items:stretch;gap:0}
+input:disabled{-webkit-text-fill-color:var(--text);opacity:1}
+.input-group.given input{background:var(--tab);font-weight:700;border-color:var(--tab)}
+.input-group label em{font-style:normal;color:var(--muted);font-weight:400}
+.given-row{display:flex;gap:8px;align-items:center}
+.given-row input{flex:1}
+body.no-listenall .speak-all{display:none!important}
+.hint{font-size:.8rem;color:var(--muted);margin-bottom:10px}
+body.no-speech .hint{display:none}
+.vlist{border:1px solid var(--border);border-radius:12px;overflow:clip}
+.vrow{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 8px;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center}
+.vrow:last-child{border-bottom:none}
+.vrow:nth-child(even){background:var(--soft)}
+.vhead{position:sticky;top:0;z-index:1;background:var(--tab)!important;font-size:.7rem;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.vhead .fr{display:none}
+.vcell{font-weight:700;font-size:.92rem;overflow-wrap:anywhere;min-height:22px}
+.vcell.en{cursor:pointer;padding:2px 6px;margin:-2px -6px;border-radius:6px}
+body.no-speech .vcell.en{cursor:default}
+@media(hover:hover){body:not(.no-speech) .vcell.en:hover{background:var(--tab)}}
+body:not(.no-speech) .vcell.en:active{background:var(--tab)}
+.vcell.fr{grid-column:1/-1;font-weight:400;color:var(--muted);font-size:.85rem}
+.hidden-text{display:inline-block;min-width:60%;background:var(--border);color:transparent!important;border-radius:4px;user-select:none;cursor:pointer}
+@media(min-width:600px){.vrow{grid-template-columns:1fr 1fr 1fr 1.5fr}.vcell.fr{grid-column:auto;font-size:.92rem}.vhead .fr{display:block}}
+.az{display:none}
+body.no-speech #voice-block{display:none}
+@media(max-width:599px){
+  .az{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;z-index:3;background:var(--card);padding:8px 0;margin-bottom:6px;scrollbar-width:none}
+  .az:empty{display:none}
+  .az::-webkit-scrollbar{display:none}
+  .az button{flex:none;width:34px;height:34px;border:none;border-radius:50%;background:var(--tab);color:var(--text);font:inherit;font-weight:700;font-size:.85rem;cursor:pointer}
+  .vlist{border:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:10px}
+  .vrow.vhead{display:none}
+  .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:12px 14px;border:1px solid var(--border)!important;border-radius:14px;background:var(--soft)!important;scroll-margin-top:64px}
+  .vcell.c-base{order:1;flex:0 1 auto;max-width:100%;font-size:1.2rem;color:var(--primary)}
+  .vcell.c-preterit{order:3;flex:1 1 calc(50% - 6px)}
+  .vcell.c-participle{order:4;flex:1 1 calc(50% - 6px)}
+  .vcell.fr{order:2;flex:1 1 40%;min-width:40%;text-align:right}
+  .vcell.c-preterit::before,.vcell.c-participle::before{content:attr(data-label);display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-bottom:2px}
+}
 dialog{margin:auto;width:min(92vw,400px);border:1px solid var(--border);border-radius:16px;padding:22px;background:var(--card);color:var(--text)}
 dialog::backdrop{background:rgba(15,23,42,.5)}
 dialog h2{font-size:1.2rem;color:var(--primary);margin-bottom:10px}
@@ -100,10 +136,10 @@ dialog .btn{margin-top:12px}
   </div>
 
   <section id="quiz-section" class="section-view active">
-    <select id="mode-select" aria-label="Mode de révision" onchange="initQuiz()">
-      <option value="srs">🧠 Répétition espacée</option>
-      <option value="all">🎲 Tous au hasard</option>
-    </select>
+    <div class="seg" id="mode-seg" role="group" aria-label="Mode de révision">
+      <button type="button" data-v="srs" class="active" onclick="setMode('srs')">🧠 Répétition espacée</button>
+      <button type="button" data-v="all" onclick="setMode('all')">🎲 Au hasard</button>
+    </div>
     <div class="stats-bar">
       <span id="score-text"></span>
       <span id="streak-text"></span>
@@ -112,10 +148,6 @@ dialog .btn{margin-top:12px}
     <div class="mastery"><span id="mastery-text"></span><div class="bar"><span id="mastery-bar"></span></div></div>
     <div class="quiz-card">
       <div class="quiz-prompt" id="q-prompt-text"></div>
-      <div class="quiz-given-box">
-        <span id="q-given-box"></span>
-        <button type="button" class="speak-btn" id="speak-given" onclick="speakGiven()" aria-label="Écouter en anglais">🔊</button>
-      </div>
       <div class="quiz-inputs" id="quiz-inputs-container"></div>
       <button class="btn" id="submit-btn" onclick="checkAnswer()" disabled>Valider</button>
       <div class="quiz-feedback" id="q-feedback" aria-live="polite"></div>
@@ -126,6 +158,8 @@ dialog .btn{margin-top:12px}
   <section id="list-section" class="section-view">
     <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher..." oninput="renderTables()">
     <div class="controls-row" id="controls-row"></div>
+    <p class="hint">👆 Touche un mot anglais pour l'écouter</p>
+    <div class="az" id="az"></div>
     <div id="tables-container"></div>
   </section>
 </main>
@@ -137,34 +171,223 @@ dialog .btn{margin-top:12px}
     <label class="switch"><input type="checkbox" id="set-speech" onchange="setSetting('speech', this.checked)"><i></i></label>
   </div>
   <div class="setting">
+    <div>Écouter les 3 formes<small>Affiché après chaque réponse du quiz</small></div>
+    <label class="switch"><input type="checkbox" id="set-listenall" onchange="setSetting('listenAll', this.checked)"><i></i></label>
+  </div>
+  <div class="setting col" id="voice-block">
+    <div>Voix anglaise<small id="voice-info"></small></div>
+    <div class="seg small" id="accent-seg" role="group" aria-label="Accent">
+      <button type="button" data-v="auto" onclick="setSetting('accent','auto')">Auto</button>
+      <button type="button" data-v="us" onclick="setSetting('accent','us')">Américaine</button>
+      <button type="button" data-v="uk" onclick="setSetting('accent','uk')">Britannique</button>
+    </div>
+    <button type="button" class="btn secondary small" onclick="testVoice()">▶ Tester la voix</button>
+  </div>
+  <div class="setting col">
     <div>Thème</div>
-    <select id="set-theme" onchange="setSetting('theme', this.value)">
-      <option value="auto">Automatique</option>
-      <option value="light">Clair</option>
-      <option value="dark">Sombre</option>
-    </select>
+    <div class="seg small" id="theme-seg" role="group" aria-label="Thème">
+      <button type="button" data-v="auto" onclick="setSetting('theme','auto')">Auto</button>
+      <button type="button" data-v="light" onclick="setSetting('theme','light')">Clair</button>
+      <button type="button" data-v="dark" onclick="setSetting('theme','dark')">Sombre</button>
+    </div>
   </div>
   <button class="btn link" onclick="resetStats()">🗑️ Réinitialiser ma progression</button>
   <button class="btn" onclick="document.getElementById('settings').close()">Fermer</button>
 </dialog>
 
 <script>
-const verbsData = [
-  ["Be","Was/were","Been","Être"],["Have","Had","Had","Avoir"],
-  ["Do","Did","Done","Faire"],["Make","Made","Made","Faire, fabriquer"],
-  ["Take","Took","Taken","Prendre"],["Go","Went","Gone","Aller"],
-  ["Get","Got","Got","Avoir, obtenir"],
-  ["Become","Became","Become","Devenir"],["Come","Came","Come","Venir"],
-  ["Overcome","Overcame","Overcome","Vaincre, surmonter"],["Run","Ran","Run","Courir"],
-  ["Bear","Bore","Born","Supporter, mettre au monde"],["Swear","Swore","Sworn","Jurer"],
-  ["Wear","Wore","Worn","Porter (habits)"],["Choose","Chose","Chosen","Choisir"],
-  ["Eat","Ate","Eaten","Manger"],["Drive","Drove","Driven","Conduire"],
-  ["Fall","Fell","Fallen","Tomber"],["Forbid","Forbade","Forbidden","Interdire"],
-  ["Forget","Forgot","Forgotten","Oublier"],["Forgive","Forgave","Forgiven","Pardonner"],
-  ["Give","Gave","Given","Donner"],["Hide","Hid","Hidden","(se) cacher"],
-  ["Speak","Spoke","Spoken","Parler"],["Steal","Stole","Stolen","Voler, dérober"],
-  ["Write","Wrote","Written","Écrire"]
-].map(([base,preterit,participle,french]) => ({base,preterit,participle,french}));
+const RAW = `Arise|Arose|Arisen|Surgir, se lever
+Awake|Awoke|Awoken|Se réveiller
+Be|Was/were|Been|Être
+Bear|Bore|Borne/born|Supporter, mettre au monde
+Beat|Beat|Beaten|Battre
+Become|Became|Become|Devenir
+Begin|Began|Begun|Commencer
+Behold|Beheld|Beheld|Apercevoir, contempler
+Bend|Bent|Bent|Plier, courber
+Bet|Bet|Bet|Parier
+Bid|Bid|Bid|Enchérir, offrir
+Bind|Bound|Bound|Lier, attacher
+Bite|Bit|Bitten|Mordre
+Bleed|Bled|Bled|Saigner
+Blow|Blew|Blown|Souffler
+Break|Broke|Broken|Casser
+Breed|Bred|Bred|Élever (animaux)
+Bring|Brought|Brought|Apporter
+Broadcast|Broadcast|Broadcast|Diffuser
+Build|Built|Built|Construire
+Burn|Burnt/burned|Burnt/burned|Brûler
+Burst|Burst|Burst|Éclater
+Buy|Bought|Bought|Acheter
+Cast|Cast|Cast|Jeter, lancer
+Catch|Caught|Caught|Attraper
+Choose|Chose|Chosen|Choisir
+Cling|Clung|Clung|S'accrocher
+Come|Came|Come|Venir
+Cost|Cost|Cost|Coûter
+Creep|Crept|Crept|Ramper
+Cut|Cut|Cut|Couper
+Deal|Dealt|Dealt|Traiter, distribuer
+Dig|Dug|Dug|Creuser
+Dive|Dived/dove|Dived|Plonger
+Do|Did|Done|Faire
+Draw|Drew|Drawn|Dessiner, tirer
+Dream|Dreamt/dreamed|Dreamt/dreamed|Rêver
+Drink|Drank|Drunk|Boire
+Drive|Drove|Driven|Conduire
+Dwell|Dwelt|Dwelt|Habiter, demeurer
+Eat|Ate|Eaten|Manger
+Fall|Fell|Fallen|Tomber
+Feed|Fed|Fed|Nourrir
+Feel|Felt|Felt|Ressentir
+Fight|Fought|Fought|Se battre
+Find|Found|Found|Trouver
+Fit|Fit/fitted|Fit/fitted|Convenir, aller (taille)
+Flee|Fled|Fled|Fuir
+Fling|Flung|Flung|Lancer, jeter
+Fly|Flew|Flown|Voler (dans les airs)
+Forbid|Forbade|Forbidden|Interdire
+Forecast|Forecast|Forecast|Prévoir (météo)
+Foresee|Foresaw|Foreseen|Prévoir, anticiper
+Foretell|Foretold|Foretold|Prédire
+Forget|Forgot|Forgotten|Oublier
+Forgive|Forgave|Forgiven|Pardonner
+Forsake|Forsook|Forsaken|Abandonner
+Freeze|Froze|Frozen|Geler
+Get|Got|Got/gotten|Obtenir, avoir
+Give|Gave|Given|Donner
+Go|Went|Gone|Aller
+Grind|Ground|Ground|Moudre
+Grow|Grew|Grown|Grandir, pousser
+Hang|Hung|Hung|Accrocher, suspendre
+Have|Had|Had|Avoir
+Hear|Heard|Heard|Entendre
+Hide|Hid|Hidden|(se) cacher
+Hit|Hit|Hit|Frapper
+Hold|Held|Held|Tenir
+Hurt|Hurt|Hurt|Blesser, faire mal
+Keep|Kept|Kept|Garder
+Kneel|Knelt/kneeled|Knelt/kneeled|S'agenouiller
+Knit|Knit/knitted|Knit/knitted|Tricoter
+Know|Knew|Known|Savoir, connaître
+Lay|Laid|Laid|Poser, déposer
+Lead|Led|Led|Mener, guider
+Lean|Leant/leaned|Leant/leaned|Se pencher, s'appuyer
+Leap|Leapt/leaped|Leapt/leaped|Bondir
+Learn|Learnt/learned|Learnt/learned|Apprendre
+Leave|Left|Left|Partir, quitter
+Lend|Lent|Lent|Prêter
+Let|Let|Let|Laisser, permettre
+Lie|Lay|Lain|S'allonger
+Light|Lit/lighted|Lit/lighted|Allumer
+Lose|Lost|Lost|Perdre
+Make|Made|Made|Faire, fabriquer
+Mean|Meant|Meant|Signifier, vouloir dire
+Meet|Met|Met|Rencontrer
+Mislay|Mislaid|Mislaid|Égarer
+Mistake|Mistook|Mistaken|Se tromper
+Misunderstand|Misunderstood|Misunderstood|Mal comprendre
+Mow|Mowed|Mown/mowed|Tondre
+Outdo|Outdid|Outdone|Surpasser
+Overcome|Overcame|Overcome|Vaincre, surmonter
+Override|Overrode|Overridden|Annuler, passer outre
+Oversee|Oversaw|Overseen|Superviser
+Overtake|Overtook|Overtaken|Dépasser, doubler
+Partake|Partook|Partaken|Prendre part
+Pay|Paid|Paid|Payer
+Prove|Proved|Proven/proved|Prouver
+Put|Put|Put|Mettre, poser
+Quit|Quit/quitted|Quit/quitted|Quitter, arrêter
+Read|Read|Read|Lire
+Rebuild|Rebuilt|Rebuilt|Reconstruire
+Redo|Redid|Redone|Refaire
+Repay|Repaid|Repaid|Rembourser
+Retell|Retold|Retold|Raconter de nouveau
+Rethink|Rethought|Rethought|Repenser
+Rewrite|Rewrote|Rewritten|Réécrire
+Rid|Rid|Rid|Débarrasser
+Ride|Rode|Ridden|Monter (cheval, vélo)
+Ring|Rang|Rung|Sonner
+Rise|Rose|Risen|Se lever, monter
+Run|Ran|Run|Courir
+Saw|Sawed|Sawn/sawed|Scier
+Say|Said|Said|Dire
+See|Saw|Seen|Voir
+Seek|Sought|Sought|Chercher
+Sell|Sold|Sold|Vendre
+Send|Sent|Sent|Envoyer
+Set|Set|Set|Placer, régler
+Sew|Sewed|Sewn/sewed|Coudre
+Shake|Shook|Shaken|Secouer
+Shear|Sheared|Shorn/sheared|Tondre (moutons)
+Shed|Shed|Shed|Répandre, perdre (feuilles)
+Shine|Shone|Shone|Briller
+Shoot|Shot|Shot|Tirer (arme), filmer
+Show|Showed|Shown/showed|Montrer
+Shrink|Shrank|Shrunk|Rétrécir
+Shut|Shut|Shut|Fermer
+Sing|Sang|Sung|Chanter
+Sink|Sank|Sunk|Couler
+Sit|Sat|Sat|S'asseoir
+Slay|Slew|Slain|Tuer
+Sleep|Slept|Slept|Dormir
+Slide|Slid|Slid|Glisser
+Slit|Slit|Slit|Fendre, entailler
+Smell|Smelt/smelled|Smelt/smelled|Sentir (odeur)
+Sow|Sowed|Sown/sowed|Semer
+Speak|Spoke|Spoken|Parler
+Speed|Sped/speeded|Sped/speeded|Aller vite
+Spell|Spelt/spelled|Spelt/spelled|Épeler
+Spend|Spent|Spent|Dépenser, passer (temps)
+Spill|Spilt/spilled|Spilt/spilled|Renverser
+Spin|Spun|Spun|Faire tourner, filer
+Spit|Spat|Spat|Cracher
+Split|Split|Split|Fendre, diviser
+Spoil|Spoilt/spoiled|Spoilt/spoiled|Gâcher, abîmer
+Spread|Spread|Spread|Étaler, répandre
+Spring|Sprang|Sprung|Bondir, jaillir
+Stand|Stood|Stood|Se tenir debout
+Steal|Stole|Stolen|Voler, dérober
+Stick|Stuck|Stuck|Coller, rester coincé
+Sting|Stung|Stung|Piquer
+Stink|Stank|Stunk|Puer
+Stride|Strode|Stridden|Marcher à grands pas
+Strike|Struck|Struck|Frapper
+Strive|Strove|Striven|S'efforcer
+Swear|Swore|Sworn|Jurer
+Sweep|Swept|Swept|Balayer
+Swell|Swelled|Swollen/swelled|Gonfler
+Swim|Swam|Swum|Nager
+Swing|Swung|Swung|Se balancer
+Take|Took|Taken|Prendre
+Teach|Taught|Taught|Enseigner
+Tear|Tore|Torn|Déchirer
+Tell|Told|Told|Dire, raconter
+Think|Thought|Thought|Penser
+Throw|Threw|Thrown|Lancer
+Thrust|Thrust|Thrust|Enfoncer, pousser
+Tread|Trod|Trodden/trod|Marcher sur, piétiner
+Undergo|Underwent|Undergone|Subir
+Understand|Understood|Understood|Comprendre
+Undertake|Undertook|Undertaken|Entreprendre
+Undo|Undid|Undone|Défaire
+Unwind|Unwound|Unwound|Dérouler, se détendre
+Uphold|Upheld|Upheld|Défendre, maintenir
+Upset|Upset|Upset|Bouleverser, contrarier
+Wake|Woke|Woken|Se réveiller
+Wear|Wore|Worn|Porter (habits)
+Weave|Wove|Woven|Tisser
+Weep|Wept|Wept|Pleurer
+Wet|Wet/wetted|Wet/wetted|Mouiller
+Win|Won|Won|Gagner
+Wind|Wound|Wound|Enrouler, remonter
+Withdraw|Withdrew|Withdrawn|Retirer
+Withhold|Withheld|Withheld|Retenir
+Withstand|Withstood|Withstood|Résister à
+Wring|Wrung|Wrung|Tordre, essorer
+Write|Wrote|Written|Écrire`;
+const verbsData = RAW.split('\n').map(l => { const [base,preterit,participle,french] = l.split('|'); return {base,preterit,participle,french}; })
+  .sort((a,b) => a.base.localeCompare(b.base));
 
 const keys = ['base','preterit','participle','french'];
 const meta = {base:"Base Verbale",preterit:"Prétérit",participle:"Participe Passé",french:"Traduction"};
@@ -178,42 +401,59 @@ const store = {
   del(k){ try { localStorage.removeItem(k); } catch {} }
 };
 let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
-let settings = Object.assign({speech:true, theme:'auto'}, store.get('settings', {}));
+let settings = Object.assign({speech:true, listenAll:false, accent:'auto', theme:'auto'}, store.get('settings', {}));
 
 /* ---------- Paramètres ---------- */
 const canSpeak = 'speechSynthesis' in window;
+const syncSeg = (id, val) => document.querySelectorAll('#'+id+' button').forEach(b => b.classList.toggle('active', b.dataset.v === val));
 function applySettings(){
   document.body.classList.toggle('no-speech', !settings.speech || !canSpeak);
+  document.body.classList.toggle('no-listenall', !settings.listenAll);
   if (settings.theme === 'auto') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = settings.theme;
+  syncSeg('theme-seg', settings.theme);
+  syncSeg('accent-seg', settings.accent);
 }
-function setSetting(k, v){ settings[k] = v; store.set('settings', settings); applySettings(); }
+function setSetting(k, v){ settings[k] = v; store.set('settings', settings); if (k === 'accent') pickVoice(); applySettings(); }
 function openSettings(){
-  document.getElementById('set-speech').checked = settings.speech && canSpeak;
-  document.getElementById('set-speech').disabled = !canSpeak;
+  const sp = document.getElementById('set-speech'), la = document.getElementById('set-listenall');
+  sp.checked = settings.speech && canSpeak; sp.disabled = !canSpeak;
+  la.checked = settings.listenAll; la.disabled = !canSpeak;
   document.getElementById('speech-note').textContent = canSpeak ? 'Prononciation en anglais' : 'Non disponible sur ce navigateur';
-  document.getElementById('set-theme').value = settings.theme;
+  pickVoice();
   document.getElementById('settings').showModal();
 }
 document.getElementById('settings').addEventListener('click', e => { if (e.target.id === 'settings') e.target.close(); });
 
 /* ---------- Prononciation (anglais) ---------- */
-let enVoice = null;
+let enVoice = null, voiceLang = 'en-US';
+const ACCENTS = { auto: ['en-US','en-GB'], us: ['en-US'], uk: ['en-GB'] };
 function pickVoice(){
   if (!canSpeak) return;
-  const vs = speechSynthesis.getVoices();
-  enVoice = vs.find(v => /^en[-_](US|GB)/i.test(v.lang)) || vs.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+  const code = l => l.replace('_','-').toLowerCase();
+  const vs = speechSynthesis.getVoices().filter(v => code(v.lang).startsWith('en'));
+  const prefs = ACCENTS[settings.accent] || ACCENTS.auto;
+  enVoice = null;
+  for (const p of prefs){
+    const m = vs.filter(v => code(v.lang) === p.toLowerCase());
+    if (m.length){ enVoice = m.find(v => v.localService) || m[0]; break; }
+  }
+  if (!enVoice) enVoice = vs[0] || null;
+  voiceLang = enVoice ? enVoice.lang.replace('_','-') : prefs[0];
+  const info = document.getElementById('voice-info');
+  if (info) info.textContent = enVoice ? `Voix utilisée : ${enVoice.name} (${enVoice.lang})` : "Aucune voix anglaise détectée : l'appareil choisira la sienne.";
 }
 if (canSpeak){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function speak(text){
   if (!canSpeak || !settings.speech) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text.replace(/\//g, ', '));
-  u.lang = 'en-US';
-  if (enVoice){ u.voice = enVoice; u.lang = enVoice.lang; }
+  u.lang = voiceLang;
+  if (enVoice) u.voice = enVoice;
   u.rate = 0.9;
   speechSynthesis.speak(u);
 }
+const testVoice = () => speak('Hello! Be, was, been.');
 
 /* ---------- Comparaison tolérante ---------- */
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -266,7 +506,7 @@ function restoreSession(){
   const v = s && verbsData.find(x => x.base === s.cur);
   if (!v || !keys.includes(s.givenKey)) return initQuiz();
   mode = s.mode === 'all' ? 'all' : 'srs';
-  document.getElementById('mode-select').value = mode;
+  syncMode();
   score = s.score|0; total = s.total|0; streak = s.streak|0; retry = Array.isArray(s.retry) ? s.retry : [];
   current = v; givenKey = s.givenKey;
   renderQuestion(s.vals || {}, false);
@@ -275,8 +515,9 @@ function restoreSession(){
 }
 
 /* ---------- Quiz ---------- */
+const syncMode = () => syncSeg('mode-seg', mode);
+function setMode(m){ if (m === mode) return; mode = m; syncMode(); initQuiz(); }
 function initQuiz(){
-  mode = document.getElementById('mode-select').value;
   score = 0; total = 0; streak = 0; retry = []; current = null;
   loadQuestion();
 }
@@ -288,15 +529,18 @@ function loadQuestion(){
   saveSession();
 }
 
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 function renderQuestion(vals, focus){
   answered = false;
-  document.getElementById('q-prompt-text').textContent = `À partir de [ ${meta[givenKey]} ], trouve les 3 autres :`;
-  document.getElementById('q-given-box').textContent = current[givenKey];
-  document.getElementById('speak-given').style.visibility = givenKey === 'french' ? 'hidden' : 'visible';
-  document.getElementById('quiz-inputs-container').innerHTML = keys.filter(k => k !== givenKey).map(k => `
+  document.getElementById('q-prompt-text').textContent = `Complète la ligne dans l'ordre. L'indice est déjà rempli.`;
+  document.getElementById('quiz-inputs-container').innerHTML = keys.map(k => k === givenKey ? `
+    <div class="input-group given">
+      <label>${meta[k]} <em>(indice)</em></label>
+      <div class="given-row"><input type="text" value="${esc(current[k])}" disabled aria-label="Indice">${k !== 'french' ? '<button type="button" class="speak-btn" onclick="speakGiven()" aria-label="Écouter en anglais">🔊</button>' : ''}</div>
+    </div>` : `
     <div class="input-group">
       <label for="in-${k}">${meta[k]}</label>
-      <input id="in-${k}" type="text" class="quiz-target-input" data-key="${k}" value="${(vals[k] || '').replace(/"/g,'&quot;')}" placeholder="Entrer ${meta[k].toLowerCase()}..." autocomplete="off" autocapitalize="none" spellcheck="false" oninput="updateSubmit()">
+      <input id="in-${k}" type="text" class="quiz-target-input" data-key="${k}" value="${esc(vals[k] || '')}" placeholder="${meta[k]}..." autocomplete="off" autocapitalize="none" spellcheck="false" oninput="updateSubmit()">
       <div class="answer"></div>
     </div>`).join('');
   document.getElementById('q-feedback').innerHTML = (mode === 'srs' && !dueList().length) ? '<div class="note">🎉 Tout est à jour : révision libre</div>' : '';
@@ -334,7 +578,7 @@ function markAnswer(){
   document.getElementById('q-feedback').innerHTML = (allOk
     ? '<span class="ok-text">✅ Bravo ! Tout est correct.</span>'
     : '<span class="ko-text">❌ Pas tout à fait, il reviendra bientôt.</span>')
-    + '<button type="button" class="speak-btn" onclick="speakAll()">🔊 Écouter les 3 formes</button>';
+    + '<button type="button" class="speak-btn speak-all" onclick="speakAll()">🔊 Écouter les 3 formes</button>';
   document.getElementById('submit-btn').disabled = true;
   document.getElementById('next-btn').disabled = false;
   return allOk;
@@ -393,18 +637,26 @@ function toggleColumn(i){
   updateToggleLabel(i); renderTables();
 }
 
+function cellTap(el, n, k){
+  const span = el.firstElementChild;
+  if (span.classList.contains('hidden-text')){ span.classList.remove('hidden-text'); return; }
+  if (k !== 'french') speak(verbsData[n][k]);
+}
+function jumpTo(l){ document.getElementById('L-' + l)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function renderTables(){
   const q = norm(document.getElementById('search-input').value);
-  const container = document.getElementById('tables-container');
-  const list = verbsData.map((v,n) => [v,n]).filter(([v]) => keys.some(k => norm(v[k]).includes(q)));
-  container.innerHTML = list.length ? list.map(([v,n]) => `
-    <div class="verb-grid-card">${keys.map((k,i) => `
-      <div class="verb-cell" style="--accent:${accent[k]}">
-        ${k !== 'french' ? `<button type="button" class="speak-btn mini" onclick="speak(verbsData[${n}].${k})" aria-label="Écouter">🔊</button>` : ''}
-        <div class="cell-label">${short[k]}</div>
-        <div class="cell-value ${hiddenCols[i] ? 'hidden-text' : ''}" ${hiddenCols[i] ? 'onclick="this.classList.remove(\'hidden-text\')" title="Cliquer pour révéler"' : ''}>${v[k]}</div>
-      </div>`).join('')}
-    </div>`).join('') : '<p class="empty">Aucun verbe trouvé.</p>';
+  const rows = verbsData.map((v,n) => [v,n]).filter(([v]) => keys.some(k => norm(v[k]).includes(q)));
+  const head = `<div class="vrow vhead">${keys.map(k => `<div class="${k === 'french' ? 'fr' : ''}">${short[k]}</div>`).join('')}</div>`;
+  let last = '';
+  const html = rows.map(([v,n]) => {
+    const L = v.base[0].toUpperCase();
+    const id = L !== last ? ` id="L-${L}"` : ''; last = L;
+    return `<div class="vrow"${id}>${keys.map((k,i) =>
+      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} c-${k}" data-label="${short[k]}" onclick="cellTap(this,${n},'${k}')"><span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k]}</span></div>`).join('')}</div>`;
+  }).join('');
+  document.getElementById('tables-container').innerHTML = rows.length ? `<div class="vlist">${head}${html}</div>` : '<p class="empty">Aucun verbe trouvé.</p>';
+  document.getElementById('az').innerHTML = [...new Set(rows.map(([v]) => v.base[0].toUpperCase()))]
+    .map(l => `<button type="button" onclick="jumpTo('${l}')">${l}</button>`).join('');
 }
 
 applySettings(); buildControls(); restoreSession();
