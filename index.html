@@ -599,6 +599,8 @@ function loadQuestion(){
   saveSession();
 }
 
+// Le curseur se place tout seul seulement sur PC (sur téléphone, ça ouvrirait le clavier)
+const canAutoFocus = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const esc = t => String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 function renderQuestion(vals, focus){
   answered = false;
@@ -616,7 +618,7 @@ function renderQuestion(vals, focus){
   document.getElementById('q-feedback').innerHTML = (mode === 'srs' && !dueList().length) ? '<div class="note">🎉 Tout est à jour : révision libre</div>' : '';
   document.getElementById('next-btn').disabled = true;
   updateSubmit(); updateStats();
-  if (focus) document.querySelector('.quiz-target-input')?.focus();
+  if (focus && canAutoFocus) document.querySelector('.quiz-target-input')?.focus();
 }
 
 function updateStats(){
