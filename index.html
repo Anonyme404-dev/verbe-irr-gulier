@@ -4,145 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Révision Verbes Irréguliers</title>
+<meta name="description" content="Révise les verbes irréguliers anglais : quiz, répétition espacée, listes personnalisées et prononciation. Fonctionne hors-ligne.">
 <meta name="theme-color" content="#4f46e5">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Verbes Irréguliers">
+<meta property="og:description" content="Quiz, répétition espacée et listes personnalisées pour apprendre les verbes irréguliers anglais.">
+<meta property="og:locale" content="fr_FR">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Verbes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--primary:#4f46e5;--primary-hover:#4338ca;--bg:#f1f5f9;--card:#fff;--soft:#f8fafc;--text:#0f172a;--muted:#64748b;--border:#cbd5e1;--tab:#e2e8f0;--success:#16a34a;--error:#dc2626}
-:root[data-theme=dark]{--primary:#818cf8;--primary-hover:#6366f1;--bg:#0f172a;--card:#1e293b;--soft:#162033;--text:#f1f5f9;--muted:#94a3b8;--border:#475569;--tab:#334155;--success:#4ade80;--error:#f87171}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]):not([data-theme=dark]){--primary:#818cf8;--primary-hover:#6366f1;--bg:#0f172a;--card:#1e293b;--soft:#162033;--text:#f1f5f9;--muted:#94a3b8;--border:#475569;--tab:#334155;--success:#4ade80;--error:#f87171}}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:16px 12px 32px}
-header{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;width:100%;max-width:700px;margin:6px 0 18px;text-align:center}
-h1{font-size:clamp(1.3rem,5.5vw,1.8rem);color:var(--primary);font-weight:700;line-height:1.2}
-.subtitle{color:var(--muted);font-size:.9rem}
-.gear{grid-column:3}
-.gear{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--primary);cursor:pointer;display:grid;place-items:center}
-.gear svg{width:22px;height:22px}
-.container{width:100%;max-width:700px;background:var(--card);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:20px}
-@media(min-width:600px){.container{padding:24px}}
-.tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--tab);padding:4px;border-radius:10px}
-.tab-btn{flex:1;background:none;border:none;font-size:1rem;font-weight:600;color:var(--muted);cursor:pointer;padding:11px 6px;border-radius:8px}
-.tab-btn.active{background:var(--card);color:var(--primary);box-shadow:0 2px 4px rgba(0,0,0,.08)}
-.section-view{display:none}.section-view.active{display:block}
-.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:.85rem;color:var(--muted);font-weight:600;margin-bottom:10px;text-align:center}
-.stats-bar span{background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.3}
-.stats-bar strong{font-size:1.05rem;color:var(--text)}
-.stats-bar small{font-size:.7rem;font-weight:600}
-.mastery{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted);font-weight:600;margin-bottom:16px}
-.bar{flex:1;height:8px;background:var(--tab);border-radius:8px;overflow:hidden}
-.bar span{display:block;height:100%;background:var(--primary);border-radius:8px;transition:width .3s}
-select,.search-bar,.input-group input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;outline:none;background:var(--card);color:var(--text)}
-select{margin-bottom:12px}
-select:focus,.search-bar:focus,.input-group input:focus{border-color:var(--primary)}
-.quiz-card{background:var(--soft);border:2px solid var(--border);border-radius:14px;padding:20px 16px;text-align:center;margin-bottom:14px}
-.quiz-prompt{font-size:.92rem;color:var(--muted);margin-bottom:10px}
-.quiz-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;text-align:left}
-.input-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;color:var(--primary)}
-.input-group input.ok{border-color:var(--success)}
-.input-group input.ko{border-color:var(--error)}
-.input-group .answer{font-size:.85rem;color:var(--error);margin-top:3px}
-.btn{background:#4f46e5;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%}
-.btn:hover:not(:disabled){background:#4338ca}
-.btn:disabled{background:#94a3b8;color:#fff;cursor:not-allowed}
-.btn.secondary{background:#64748b}
-.btn.link{background:none;color:var(--muted);font-size:.85rem;padding:10px}
-.btn.link:hover:not(:disabled){background:var(--tab);color:var(--error)}
-.btn.small{padding:10px;font-size:.9rem;margin-top:10px}
-.speak-btn{background:var(--tab);border:none;border-radius:20px;padding:6px 12px;font-size:1rem;cursor:pointer;color:var(--text)}
-.speak-btn.mini{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:.75rem}
-body.no-speech .speak-btn{display:none!important}
-.quiz-feedback{margin-top:14px;font-weight:600;min-height:24px}
-.quiz-feedback .speak-btn{display:block;margin:10px auto 0;font-size:.9rem}
-.ok-text{color:var(--success)}.ko-text{color:var(--error)}
-.note{font-size:.85rem;color:var(--muted);font-weight:400}
-.search-bar{margin-bottom:12px}
-.controls-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
-@media(max-width:600px){.controls-row{grid-template-columns:1fr 1fr}}
-.toggle-col-btn{background:var(--tab);color:var(--text);border:none;padding:10px 6px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer}
-.toggle-col-btn.hidden-col{opacity:.6;text-decoration:line-through}
-.empty{text-align:center;color:var(--muted);padding:20px}
-.seg{display:flex;gap:4px;background:var(--tab);padding:4px;border-radius:12px;margin-bottom:12px}
-.seg button{flex:1;border:none;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:.88rem;padding:10px 6px;border-radius:9px;cursor:pointer;line-height:1.25}
-.seg button.active{background:var(--card);color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.seg.small{margin:8px 0 0}
-.setting.col{flex-direction:column;align-items:stretch;gap:0}
-input:disabled{-webkit-text-fill-color:var(--text);opacity:1}
-.input-group.given input{background:var(--tab);font-weight:700;border-color:var(--tab)}
-.input-group label em{font-style:normal;color:var(--muted);font-weight:400}
-.given-row{display:flex;gap:8px;align-items:center}
-.given-row input{flex:1}
-body.no-listenall .speak-all{display:none!important}
-.hint{font-size:.8rem;color:var(--muted);margin-bottom:10px}
-body.no-speech .hint{display:none}
-.vlist{border:1px solid var(--border);border-radius:12px;overflow:clip}
-.vrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 8px;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center}
-.vrow:last-child{border-bottom:none}
-.vrow:nth-child(even){background:var(--soft)}
-.vhead{position:sticky;top:0;z-index:1;background:var(--tab)!important;font-size:.7rem;text-transform:uppercase;font-weight:700;color:var(--muted)}
-.vhead .fr{display:none}
-.vcell{font-weight:700;font-size:.92rem;overflow-wrap:anywhere;min-height:22px}
-.vcell.fr{grid-column:1/-1;font-weight:400;color:var(--muted);font-size:.85rem}
-.hidden-text{display:inline-block;min-width:60%;background:var(--border);color:transparent!important;border-radius:4px;user-select:none;cursor:pointer}
-@media(min-width:700px){.vrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr)}.vcell.long{font-size:.84rem}.vcell.fr{grid-column:auto;font-size:.92rem}.vhead .fr{display:block}}
-.az{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.az:empty,body.no-letters .az{display:none}
-.az button{flex:none;width:34px;height:34px;border:none;border-radius:50%;background:var(--tab);color:var(--text);font:inherit;font-weight:700;font-size:.85rem;cursor:pointer}
-body.no-speech #voice-block{display:none}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border:2px solid var(--border);background:var(--card);color:var(--text);font:inherit;font-weight:600;font-size:.88rem;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
-.chip.active{background:#4f46e5;border-color:#4f46e5;color:#fff}
-.chip.plus{width:40px;padding:8px 0;font-size:1.15rem;line-height:1;color:var(--primary);border-style:dashed}
-.list-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.85rem;color:var(--muted);font-weight:600}
-.list-actions span{flex:1}
-.list-actions small{display:block;font-weight:400;font-size:.75rem}
-.mini-btn{border:none;background:var(--tab);color:var(--text);font:inherit;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer}
-.picker{max-height:38dvh;overflow:auto;border:1px solid var(--border);border-radius:10px;margin:8px 0 12px}
-.pick{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer}
-.pick:last-child{border-bottom:none}
-.pick input{width:20px;height:20px;accent-color:#4f46e5;flex:none}
-.pick span{margin-left:auto;text-align:right;color:var(--muted);font-size:.8rem}
-.pick-top{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--muted);font-weight:600}
-.pick-top .btn{width:auto;padding:4px 8px;margin:0}
-.err{color:var(--error);font-size:.85rem;min-height:1.3em;margin-bottom:4px}
-.row2{display:flex;gap:8px;margin-top:8px}
-.row2 .mini-btn{flex:1;padding:10px}
-#msg-text{white-space:pre-line;color:var(--muted);font-size:.95rem;margin-bottom:12px}
-.note-p{color:var(--muted);font-size:.9rem;margin-bottom:12px}
-.vlist{border:1px solid var(--border);border-radius:12px;overflow:clip}
-@media(min-width:700px){.vcell.en{display:flex;align-items:center;gap:6px}.vcell .speak-btn.mini{position:static;order:2;flex:none;padding:1px 6px;font-size:.7rem}}
-@media(max-width:359px){.container{padding:14px}.vrow{padding:8px!important;gap:8px!important}.vcell{padding:10px 4px!important}.vcell.long{font-size:.78rem!important}}
-@media(max-width:699px){
-  .az{flex-wrap:nowrap;overflow-x:auto;position:sticky;top:0;z-index:3;background:var(--card);padding:8px 0;scrollbar-width:none}
-  .az::-webkit-scrollbar{display:none}
-  .vlist{border:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:12px}
-  .vrow.vhead{display:none}
-  .vrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch;gap:10px;padding:12px;border:2px solid var(--border)!important;border-radius:12px;background:var(--soft)!important;scroll-margin-top:64px}
-  .vcell{min-width:0;position:relative;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 8px;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:1rem;overflow-wrap:break-word}
-  .vcell::before{content:attr(data-label);font-size:.7rem;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
-  .vcell.en::before{align-self:stretch;padding:0 22px}
-  .vcell.long{font-size:.88rem}
-  .vcell.fr{grid-column:auto;color:var(--text);font-weight:700;font-size:.92rem}
-}
-dialog{margin:auto;width:min(92vw,400px);border:1px solid var(--border);border-radius:16px;padding:22px;background:var(--card);color:var(--text)}
-dialog::backdrop{background:rgba(15,23,42,.5)}
-dialog h2{font-size:1.2rem;color:var(--primary);margin-bottom:10px}
-.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
-.setting small{display:block;color:var(--muted);font-size:.75rem}
-.setting select{width:auto;margin:0;padding:8px 10px}
-.switch{position:relative;width:50px;height:28px;flex:none}
-.switch input{opacity:0;width:100%;height:100%;position:absolute;inset:0;z-index:1;cursor:pointer}
-.switch i{position:absolute;inset:0;background:var(--border);border-radius:28px;transition:.2s}
-.switch i::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s}
-.switch input:checked+i{background:var(--primary)}
-.switch input:checked+i::after{transform:translateX(22px)}
-dialog .btn{margin-top:12px}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<noscript><p style="padding:20px;text-align:center">Ce site a besoin de JavaScript pour fonctionner.</p></noscript>
 <header>
   <div></div>
   <div><h1>Verbes Irréguliers</h1><p class="subtitle">Espace de révision interactif</p></div>
@@ -153,11 +34,11 @@ dialog .btn{margin-top:12px}
 
 <main class="container">
   <div class="tabs" role="tablist">
-    <button class="tab-btn active" id="tab-quiz" role="tab" onclick="switchTab('quiz')">🎯 Mode Quiz</button>
-    <button class="tab-btn" id="tab-list" role="tab" onclick="switchTab('list')">📖 Mode Liste</button>
+    <button class="tab-btn active" id="tab-quiz" role="tab" aria-selected="true" aria-controls="quiz-section" onclick="switchTab('quiz')">🎯 Mode Quiz</button>
+    <button class="tab-btn" id="tab-list" role="tab" aria-selected="false" aria-controls="list-section" onclick="switchTab('list')">📖 Mode Liste</button>
   </div>
 
-  <section id="quiz-section" class="section-view active">
+  <section id="quiz-section" class="section-view active" role="tabpanel" aria-labelledby="tab-quiz">
     <div class="chips" id="chips-quiz"></div>
     <div class="seg" id="mode-seg" role="group" aria-label="Mode de révision">
       <button type="button" data-v="srs" class="active" onclick="setMode('srs')">🧠 Répétition espacée</button>
@@ -178,10 +59,10 @@ dialog .btn{margin-top:12px}
     <button class="btn secondary" id="next-btn" onclick="nextQuestion()" disabled>Verbe suivant ➔</button>
   </section>
 
-  <section id="list-section" class="section-view">
+  <section id="list-section" class="section-view" role="tabpanel" aria-labelledby="tab-list">
     <div class="chips" id="chips-list"></div>
     <div id="list-actions"></div>
-    <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher..." oninput="renderTables()">
+    <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher..." aria-label="Rechercher un verbe ou une traduction" oninput="searchList()">
     <div class="controls-row" id="controls-row"></div>
     <p class="hint">👆 Touche le 🔊 pour écouter un mot</p>
     <div class="az" id="az"></div>
@@ -189,19 +70,19 @@ dialog .btn{margin-top:12px}
   </section>
 </main>
 
-<dialog id="settings">
-  <h2>⚙️ Paramètres</h2>
+<dialog id="settings" aria-labelledby="settings-title">
+  <h2 id="settings-title">⚙️ Paramètres</h2>
   <div class="setting">
     <div>Bouton « écouter » 🔊<small id="speech-note">Prononciation en anglais</small></div>
-    <label class="switch"><input type="checkbox" id="set-speech" onchange="setSetting('speech', this.checked)"><i></i></label>
+    <label class="switch"><input type="checkbox" id="set-speech" aria-label="Bouton écouter" onchange="setSetting('speech', this.checked)"><i></i></label>
   </div>
   <div class="setting">
     <div>Écouter les 3 formes<small>Affiché après chaque réponse du quiz</small></div>
-    <label class="switch"><input type="checkbox" id="set-listenall" onchange="setSetting('listenAll', this.checked)"><i></i></label>
+    <label class="switch"><input type="checkbox" id="set-listenall" aria-label="Écouter les 3 formes après chaque réponse" onchange="setSetting('listenAll', this.checked)"><i></i></label>
   </div>
   <div class="setting">
     <div>Barre de lettres A–Z<small>Dans le mode liste</small></div>
-    <label class="switch"><input type="checkbox" id="set-letters" onchange="setSetting('letters', this.checked)"><i></i></label>
+    <label class="switch"><input type="checkbox" id="set-letters" aria-label="Barre de lettres A à Z" onchange="setSetting('letters', this.checked)"><i></i></label>
   </div>
   <div class="setting col" id="voice-block">
     <div>Voix anglaise<small id="voice-info"></small></div>
@@ -230,16 +111,16 @@ dialog .btn{margin-top:12px}
 
 <input type="file" id="import-file" accept=".json,application/json" hidden>
 
-<dialog id="msg">
+<dialog id="msg" aria-labelledby="msg-title">
   <h2 id="msg-title"></h2>
   <p id="msg-text"></p>
   <button class="btn" onclick="document.getElementById('msg').close()">OK</button>
 </dialog>
 
-<dialog id="list-editor">
+<dialog id="list-editor" aria-labelledby="le-title">
   <h2 id="le-title">Nouvelle liste</h2>
-  <input id="le-name" class="search-bar" type="text" maxlength="30" placeholder="Nom de la liste (ex : Leçon 1)" autocomplete="off">
-  <input id="le-search" class="search-bar" type="search" placeholder="🔍 Chercher un verbe..." oninput="renderPicker()">
+  <input id="le-name" class="search-bar" type="text" aria-label="Nom de la liste" maxlength="30" placeholder="Nom de la liste (ex : Leçon 1)" autocomplete="off">
+  <input id="le-search" class="search-bar" type="search" aria-label="Chercher un verbe à ajouter" placeholder="🔍 Chercher un verbe..." oninput="renderPicker()">
   <div class="pick-top"><span id="le-count"></span><button type="button" class="btn link" onclick="clearPicker()">Tout décocher</button></div>
   <div class="picker" id="le-picker"></div>
   <div class="err" id="le-error"></div>
@@ -247,666 +128,7 @@ dialog .btn{margin-top:12px}
   <button class="btn link" onclick="document.getElementById('list-editor').close()">Annuler</button>
 </dialog>
 
-<script>
-const RAW = `Arise|Arose|Arisen|Surgir, se lever
-Awake|Awoke|Awoken|Se réveiller
-Be|Was/were|Been|Être
-Bear|Bore|Borne/born|Supporter, mettre au monde
-Beat|Beat|Beaten|Battre
-Become|Became|Become|Devenir
-Begin|Began|Begun|Commencer
-Behold|Beheld|Beheld|Apercevoir, contempler
-Bend|Bent|Bent|Plier, courber
-Bet|Bet|Bet|Parier
-Bid|Bid|Bid|Enchérir, offrir
-Bind|Bound|Bound|Lier, attacher
-Bite|Bit|Bitten|Mordre
-Bleed|Bled|Bled|Saigner
-Blow|Blew|Blown|Souffler
-Break|Broke|Broken|Casser
-Breed|Bred|Bred|Élever (animaux)
-Bring|Brought|Brought|Apporter
-Broadcast|Broadcast|Broadcast|Diffuser
-Build|Built|Built|Construire
-Burn|Burnt/burned|Burnt/burned|Brûler
-Burst|Burst|Burst|Éclater
-Buy|Bought|Bought|Acheter
-Cast|Cast|Cast|Jeter, lancer
-Catch|Caught|Caught|Attraper
-Choose|Chose|Chosen|Choisir
-Cling|Clung|Clung|S'accrocher
-Come|Came|Come|Venir
-Cost|Cost|Cost|Coûter
-Creep|Crept|Crept|Ramper
-Cut|Cut|Cut|Couper
-Deal|Dealt|Dealt|Traiter, distribuer
-Dig|Dug|Dug|Creuser
-Dive|Dived/dove|Dived|Plonger
-Do|Did|Done|Faire
-Draw|Drew|Drawn|Dessiner, tirer
-Dream|Dreamt/dreamed|Dreamt/dreamed|Rêver
-Drink|Drank|Drunk|Boire
-Drive|Drove|Driven|Conduire
-Dwell|Dwelt|Dwelt|Habiter, demeurer
-Eat|Ate|Eaten|Manger
-Fall|Fell|Fallen|Tomber
-Feed|Fed|Fed|Nourrir
-Feel|Felt|Felt|Ressentir
-Fight|Fought|Fought|Se battre
-Find|Found|Found|Trouver
-Fit|Fit/fitted|Fit/fitted|Convenir, aller (taille)
-Flee|Fled|Fled|Fuir
-Fling|Flung|Flung|Lancer, jeter
-Fly|Flew|Flown|Voler (dans les airs)
-Forbid|Forbade|Forbidden|Interdire
-Forecast|Forecast|Forecast|Prévoir (météo)
-Foresee|Foresaw|Foreseen|Prévoir, anticiper
-Foretell|Foretold|Foretold|Prédire
-Forget|Forgot|Forgotten|Oublier
-Forgive|Forgave|Forgiven|Pardonner
-Forsake|Forsook|Forsaken|Abandonner
-Freeze|Froze|Frozen|Geler
-Get|Got|Got/gotten|Obtenir, avoir
-Give|Gave|Given|Donner
-Go|Went|Gone|Aller
-Grind|Ground|Ground|Moudre
-Grow|Grew|Grown|Grandir, pousser
-Hang|Hung|Hung|Accrocher, suspendre
-Have|Had|Had|Avoir
-Hear|Heard|Heard|Entendre
-Hide|Hid|Hidden|(se) cacher
-Hit|Hit|Hit|Frapper
-Hold|Held|Held|Tenir
-Hurt|Hurt|Hurt|Blesser, faire mal
-Keep|Kept|Kept|Garder
-Kneel|Knelt/kneeled|Knelt/kneeled|S'agenouiller
-Knit|Knit/knitted|Knit/knitted|Tricoter
-Know|Knew|Known|Savoir, connaître
-Lay|Laid|Laid|Poser, déposer
-Lead|Led|Led|Mener, guider
-Lean|Leant/leaned|Leant/leaned|Se pencher, s'appuyer
-Leap|Leapt/leaped|Leapt/leaped|Bondir
-Learn|Learnt/learned|Learnt/learned|Apprendre
-Leave|Left|Left|Partir, quitter
-Lend|Lent|Lent|Prêter
-Let|Let|Let|Laisser, permettre
-Lie|Lay|Lain|S'allonger
-Light|Lit/lighted|Lit/lighted|Allumer
-Lose|Lost|Lost|Perdre
-Make|Made|Made|Faire, fabriquer
-Mean|Meant|Meant|Signifier, vouloir dire
-Meet|Met|Met|Rencontrer
-Mislay|Mislaid|Mislaid|Égarer
-Mistake|Mistook|Mistaken|Se tromper
-Misunderstand|Misunderstood|Misunderstood|Mal comprendre
-Mow|Mowed|Mown/mowed|Tondre
-Outdo|Outdid|Outdone|Surpasser
-Overcome|Overcame|Overcome|Vaincre, surmonter
-Override|Overrode|Overridden|Annuler, passer outre
-Oversee|Oversaw|Overseen|Superviser
-Overtake|Overtook|Overtaken|Dépasser, doubler
-Partake|Partook|Partaken|Prendre part
-Pay|Paid|Paid|Payer
-Prove|Proved|Proven/proved|Prouver
-Put|Put|Put|Mettre, poser
-Quit|Quit/quitted|Quit/quitted|Quitter, arrêter
-Read|Read|Read|Lire
-Rebuild|Rebuilt|Rebuilt|Reconstruire
-Redo|Redid|Redone|Refaire
-Repay|Repaid|Repaid|Rembourser
-Retell|Retold|Retold|Raconter de nouveau
-Rethink|Rethought|Rethought|Repenser
-Rewrite|Rewrote|Rewritten|Réécrire
-Rid|Rid|Rid|Débarrasser
-Ride|Rode|Ridden|Monter (cheval, vélo)
-Ring|Rang|Rung|Sonner
-Rise|Rose|Risen|Se lever, monter
-Run|Ran|Run|Courir
-Saw|Sawed|Sawn/sawed|Scier
-Say|Said|Said|Dire
-See|Saw|Seen|Voir
-Seek|Sought|Sought|Chercher
-Sell|Sold|Sold|Vendre
-Send|Sent|Sent|Envoyer
-Set|Set|Set|Placer, régler
-Sew|Sewed|Sewn/sewed|Coudre
-Shake|Shook|Shaken|Secouer
-Shear|Sheared|Shorn/sheared|Tondre (moutons)
-Shed|Shed|Shed|Répandre, perdre (feuilles)
-Shine|Shone|Shone|Briller
-Shoot|Shot|Shot|Tirer (arme), filmer
-Show|Showed|Shown/showed|Montrer
-Shrink|Shrank|Shrunk|Rétrécir
-Shut|Shut|Shut|Fermer
-Sing|Sang|Sung|Chanter
-Sink|Sank|Sunk|Couler
-Sit|Sat|Sat|S'asseoir
-Slay|Slew|Slain|Tuer
-Sleep|Slept|Slept|Dormir
-Slide|Slid|Slid|Glisser
-Slit|Slit|Slit|Fendre, entailler
-Smell|Smelt/smelled|Smelt/smelled|Sentir (odeur)
-Sow|Sowed|Sown/sowed|Semer
-Speak|Spoke|Spoken|Parler
-Speed|Sped/speeded|Sped/speeded|Aller vite
-Spell|Spelt/spelled|Spelt/spelled|Épeler
-Spend|Spent|Spent|Dépenser, passer (temps)
-Spill|Spilt/spilled|Spilt/spilled|Renverser
-Spin|Spun|Spun|Faire tourner, filer
-Spit|Spat|Spat|Cracher
-Split|Split|Split|Fendre, diviser
-Spoil|Spoilt/spoiled|Spoilt/spoiled|Gâcher, abîmer
-Spread|Spread|Spread|Étaler, répandre
-Spring|Sprang|Sprung|Bondir, jaillir
-Stand|Stood|Stood|Se tenir debout
-Steal|Stole|Stolen|Voler, dérober
-Stick|Stuck|Stuck|Coller, rester coincé
-Sting|Stung|Stung|Piquer
-Stink|Stank|Stunk|Puer
-Stride|Strode|Stridden|Marcher à grands pas
-Strike|Struck|Struck|Frapper
-Strive|Strove|Striven|S'efforcer
-Swear|Swore|Sworn|Jurer
-Sweep|Swept|Swept|Balayer
-Swell|Swelled|Swollen/swelled|Gonfler
-Swim|Swam|Swum|Nager
-Swing|Swung|Swung|Se balancer
-Take|Took|Taken|Prendre
-Teach|Taught|Taught|Enseigner
-Tear|Tore|Torn|Déchirer
-Tell|Told|Told|Dire, raconter
-Think|Thought|Thought|Penser
-Throw|Threw|Thrown|Lancer
-Thrust|Thrust|Thrust|Enfoncer, pousser
-Tread|Trod|Trodden/trod|Marcher sur, piétiner
-Undergo|Underwent|Undergone|Subir
-Understand|Understood|Understood|Comprendre
-Undertake|Undertook|Undertaken|Entreprendre
-Undo|Undid|Undone|Défaire
-Unwind|Unwound|Unwound|Dérouler, se détendre
-Uphold|Upheld|Upheld|Défendre, maintenir
-Upset|Upset|Upset|Bouleverser, contrarier
-Wake|Woke|Woken|Se réveiller
-Wear|Wore|Worn|Porter (habits)
-Weave|Wove|Woven|Tisser
-Weep|Wept|Wept|Pleurer
-Wet|Wet/wetted|Wet/wetted|Mouiller
-Win|Won|Won|Gagner
-Wind|Wound|Wound|Enrouler, remonter
-Withdraw|Withdrew|Withdrawn|Retirer
-Withhold|Withheld|Withheld|Retenir
-Withstand|Withstood|Withstood|Résister à
-Wring|Wrung|Wrung|Tordre, essorer
-Write|Wrote|Written|Écrire`;
-const verbsData = RAW.split('\n').map(l => { const [base,preterit,participle,french] = l.split('|'); return {base,preterit,participle,french}; })
-  .sort((a,b) => a.base.localeCompare(b.base));
-
-const keys = ['base','preterit','participle','french'];
-const meta = {base:"Base Verbale",preterit:"Prétérit",participle:"Participe Passé",french:"Traduction"};
-const short = {base:"Base",preterit:"Prétérit",participle:"Participe",french:"Traduction"};
-const accent = {base:'#6366f1',preterit:'#8b5cf6',participle:'#ec4899',french:'#14b8a6'};
-
-/* ---------- Sauvegarde locale (progression + paramètres) ---------- */
-const store = {
-  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
-  del(k){ try { localStorage.removeItem(k); } catch {} }
-};
-let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
-// v2 : nouveaux réglages par défaut (bouton 🔊 désactivé, voix britannique) appliqués une seule fois
-const savedSettings = store.get('settings', {});
-if (savedSettings.v !== 2){ delete savedSettings.speech; delete savedSettings.accent; savedSettings.v = 2; store.set('settings', savedSettings); }
-let settings = Object.assign({speech:false, listenAll:false, letters:false, accent:'uk', theme:'auto'}, savedSettings);
-
-/* ---------- Paramètres ---------- */
-const canSpeak = 'speechSynthesis' in window;
-const syncSeg = (id, val) => document.querySelectorAll('#'+id+' button').forEach(b => b.classList.toggle('active', b.dataset.v === val));
-function applySettings(){
-  document.body.classList.toggle('no-speech', !settings.speech || !canSpeak);
-  document.body.classList.toggle('no-listenall', !settings.listenAll);
-  document.body.classList.toggle('no-letters', !settings.letters);
-  if (settings.theme === 'auto') delete document.documentElement.dataset.theme;
-  else document.documentElement.dataset.theme = settings.theme;
-  syncSeg('theme-seg', settings.theme);
-  syncSeg('accent-seg', settings.accent);
-}
-function setSetting(k, v){ settings[k] = v; store.set('settings', settings); if (k === 'accent') pickVoice(); applySettings(); }
-function openSettings(){
-  const sp = document.getElementById('set-speech'), la = document.getElementById('set-listenall');
-  sp.checked = settings.speech && canSpeak; sp.disabled = !canSpeak;
-  la.checked = settings.listenAll; la.disabled = !canSpeak;
-  document.getElementById('set-letters').checked = settings.letters;
-  document.getElementById('speech-note').textContent = canSpeak ? 'Prononciation en anglais' : 'Non disponible sur ce navigateur';
-  pickVoice();
-  document.getElementById('settings').showModal();
-}
-document.getElementById('settings').addEventListener('click', e => { if (e.target.id === 'settings') e.target.close(); });
-
-/* ---------- Prononciation (anglais) ---------- */
-let enVoice = null, voiceLang = 'en-US';
-const ACCENTS = { auto: ['en-US','en-GB'], us: ['en-US'], uk: ['en-GB'] };
-function pickVoice(){
-  if (!canSpeak) return;
-  const code = l => l.replace('_','-').toLowerCase();
-  const vs = speechSynthesis.getVoices().filter(v => code(v.lang).startsWith('en'));
-  const prefs = ACCENTS[settings.accent] || ACCENTS.auto;
-  enVoice = null;
-  for (const p of prefs){
-    const m = vs.filter(v => code(v.lang) === p.toLowerCase());
-    if (m.length){ enVoice = m.find(v => v.localService) || m[0]; break; }
-  }
-  if (!enVoice) enVoice = vs[0] || null;
-  voiceLang = enVoice ? enVoice.lang.replace('_','-') : prefs[0];
-  const info = document.getElementById('voice-info');
-  if (info) info.textContent = enVoice ? `Voix utilisée : ${enVoice.name} (${enVoice.lang})` : "Aucune voix anglaise détectée : l'appareil choisira la sienne.";
-}
-if (canSpeak){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function speak(text){
-  if (!canSpeak || !settings.speech) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text.replace(/\//g, ', '));
-  u.lang = voiceLang;
-  if (enVoice) u.voice = enVoice;
-  u.rate = 0.9;
-  speechSynthesis.speak(u);
-}
-const testVoice = () => speak('Hello! Be, was, been.');
-
-/* ---------- Comparaison tolérante ---------- */
-const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-  .replace(/\(.*?\)/g,'').replace(/\s+/g,' ').trim();
-const accepted = val => { const n = norm(val); return [n, ...n.split(/[\/,]/).map(x => x.trim())].filter(Boolean); };
-const isCorrect = (input, expected) => accepted(expected).includes(norm(input));
-
-/* ---------- Répétition espacée (boîtes de Leitner) ---------- */
-const DAY = 864e5;
-const GAPS = [0, 1, 3, 7, 14];
-let srs = store.get('srs', {});
-const entry = v => srs[v.base] || { box: 0, due: 0 };
-let lists = store.get('lists', []);
-let quizList = 'all', viewList = 'all';
-const listById = id => lists.find(l => l.id === id);
-function poolVerbs(){ const l = listById(quizList); return l ? verbsData.filter(v => l.bases.includes(v.base)) : verbsData; }
-const dueList = () => poolVerbs().filter(v => entry(v).due <= Date.now());
-
-let mode = 'srs', current = null, givenKey = 'base', tab = 'quiz';
-let score = 0, total = 0, streak = 0, answered = false, retry = [];
-let lastRetry = false;
-
-function pickNext(){
-  const r = lastRetry ? -1 : retry.findIndex(x => x.at <= total);
-  if (r >= 0){
-    lastRetry = true;
-    const b = retry.splice(r, 1)[0].base;
-    return verbsData.find(v => v.base === b);
-  }
-  lastRetry = false;
-  let list = mode === 'srs' ? dueList() : poolVerbs();
-  if (!list.length) list = [...poolVerbs()].sort((a,b) => entry(a).due - entry(b).due).slice(0, 5);
-  const others = list.filter(v => !current || v.base !== current.base);
-  if (others.length) list = others;
-  const weights = list.map(v => mode === 'srs' ? 5 - entry(v).box : 1);
-  let n = Math.random() * weights.reduce((a,b) => a + b, 0);
-  for (let i = 0; i < list.length; i++){ n -= weights[i]; if (n <= 0) return list[i]; }
-  return list[list.length - 1];
-}
-
-function record(ok){
-  const e = entry(current);
-  const box = ok ? Math.min(e.box + 1, GAPS.length - 1) : 0;
-  srs[current.base] = { box, due: Date.now() + GAPS[box] * DAY };
-  store.set('srs', srs);
-  if (!ok && !retry.some(x => x.base === current.base)) retry.push({ base: current.base, at: total + 3 });
-}
-
-/* ---------- Session (le quiz reprend où on l'a laissé) ---------- */
-const getVals = () => Object.fromEntries([...document.querySelectorAll('.quiz-target-input')].map(i => [i.dataset.key, i.value]));
-function saveSession(){
-  if (!current) return;
-  store.set('session', { mode, score, total, streak, retry, cur: current.base, givenKey, answered, vals: getVals(), tab, quizList });
-}
-function restoreSession(){
-  const s = store.get('session', null);
-  const v = s && verbsData.find(x => x.base === s.cur);
-  if (!v || !keys.includes(s.givenKey)) return initQuiz();
-  mode = s.mode === 'all' ? 'all' : 'srs';
-  quizList = listById(s.quizList) ? s.quizList : 'all';
-  syncMode();
-  score = s.score|0; total = s.total|0; streak = s.streak|0; retry = Array.isArray(s.retry) ? s.retry : [];
-  current = v; givenKey = s.givenKey;
-  renderQuestion(s.vals || {}, false);
-  if (s.answered){ answered = true; markAnswer(); }
-  if (s.tab === 'list') switchTab('list');
-}
-
-/* ---------- Quiz ---------- */
-const syncMode = () => syncSeg('mode-seg', mode);
-function setMode(m){ if (m === mode) return; mode = m; syncMode(); initQuiz(); }
-function initQuiz(){
-  score = 0; total = 0; streak = 0; retry = []; current = null; lastRetry = false;
-  loadQuestion();
-}
-
-function loadQuestion(){
-  current = pickNext();
-  givenKey = keys[Math.floor(Math.random() * keys.length)];
-  renderQuestion({}, true);
-  saveSession();
-}
-
-// Le curseur se place tout seul seulement sur PC (sur téléphone, ça ouvrirait le clavier)
-const canAutoFocus = matchMedia('(hover: hover) and (pointer: fine)').matches;
-const esc = t => String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-function renderQuestion(vals, focus){
-  answered = false;
-  document.getElementById('q-prompt-text').textContent = `Complète la ligne dans l'ordre. L'indice est déjà rempli.`;
-  document.getElementById('quiz-inputs-container').innerHTML = keys.map(k => k === givenKey ? `
-    <div class="input-group given">
-      <label>${meta[k]} <em>(indice)</em></label>
-      <div class="given-row"><input type="text" value="${esc(current[k])}" disabled aria-label="Indice">${k !== 'french' ? '<button type="button" class="speak-btn" onclick="speakGiven()" aria-label="Écouter en anglais">🔊</button>' : ''}</div>
-    </div>` : `
-    <div class="input-group">
-      <label for="in-${k}">${meta[k]}</label>
-      <input id="in-${k}" type="text" class="quiz-target-input" data-key="${k}" value="${esc(vals[k] || '')}" placeholder="${meta[k]}..." autocomplete="off" autocapitalize="none" spellcheck="false" oninput="updateSubmit()">
-      <div class="answer"></div>
-    </div>`).join('');
-  document.getElementById('q-feedback').innerHTML = (mode === 'srs' && !dueList().length) ? '<div class="note">🎉 Tout est à jour : révision libre</div>' : '';
-  document.getElementById('next-btn').disabled = true;
-  updateSubmit(); updateStats();
-  if (focus && canAutoFocus) document.querySelector('.quiz-target-input')?.focus();
-}
-
-function updateStats(){
-  document.getElementById('score-text').innerHTML = `<strong>${score} / ${total}</strong><small>Score</small>`;
-  document.getElementById('streak-text').innerHTML = `<strong>🔥 ${streak}</strong><small>Série</small>`;
-  document.getElementById('due-text').innerHTML = `<strong>📌 ${dueList().length}</strong><small>À revoir</small>`;
-  const P = poolVerbs();
-  const m = Math.round(P.reduce((a,v) => a + entry(v).box, 0) / (P.length * (GAPS.length - 1)) * 100);
-  document.getElementById('mastery-text').textContent = `Maîtrise : ${m} %`;
-  document.getElementById('mastery-bar').style.width = m + '%';
-}
-
-const speakGiven = () => speak(current[givenKey]);
-const speakAll = () => speak(`${current.base}. ${current.preterit}. ${current.participle}.`);
-
-function updateSubmit(){
-  const all = [...document.querySelectorAll('.quiz-target-input')].every(i => i.value.trim());
-  document.getElementById('submit-btn').disabled = !all || answered;
-  saveSession();
-}
-
-/* Affiche la correction (sans modifier le score) */
-function markAnswer(){
-  let allOk = true;
-  document.querySelectorAll('.quiz-target-input').forEach(inp => {
-    const k = inp.dataset.key, ok = isCorrect(inp.value, current[k]);
-    inp.classList.add(ok ? 'ok' : 'ko'); inp.disabled = true;
-    if (!ok){ allOk = false; inp.parentElement.querySelector('.answer').textContent = `Attendu : ${current[k]}`; }
-  });
-  document.getElementById('q-feedback').innerHTML = (allOk
-    ? '<span class="ok-text">✅ Bravo ! Tout est correct.</span>'
-    : '<span class="ko-text">❌ Pas tout à fait, il reviendra bientôt.</span>')
-    + '<button type="button" class="speak-btn speak-all" onclick="speakAll()">🔊 Écouter les 3 formes</button>';
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('next-btn').disabled = false;
-  return allOk;
-}
-
-function checkAnswer(){
-  if (answered) return;
-  answered = true;
-  const ok = markAnswer();
-  total++;
-  if (ok){ score++; streak++; } else { streak = 0; }
-  record(ok);
-  updateStats(); saveSession();
-  document.getElementById('next-btn').focus();
-}
-
-function nextQuestion(){ loadQuestion(); }
-
-function resetStats(){
-  if (!confirm("Effacer toute ta progression ?")) return;
-  srs = {}; store.del('srs'); store.del('session');
-  document.getElementById('settings').close();
-  initQuiz();
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Enter' || tab !== 'quiz' || document.querySelector('dialog[open]')) return;
-  if (e.target.closest('.speak-btn, .gear')) return;
-  if (!answered){ if (!document.getElementById('submit-btn').disabled) checkAnswer(); }
-  else if (e.target.id !== 'next-btn') nextQuestion();
-});
-
-/* ---------- Liste ---------- */
-function switchTab(t){
-  tab = t;
-  for (const x of ['quiz','list']){
-    document.getElementById('tab-'+x).classList.toggle('active', x === t);
-    document.getElementById(x+'-section').classList.toggle('active', x === t);
-  }
-  if (t === 'list') renderTables();
-  saveSession();
-}
-
-function buildControls(){
-  document.getElementById('controls-row').innerHTML = keys.map((k,i) =>
-    `<button class="toggle-col-btn" id="btn-col-${i}" onclick="toggleColumn(${i})"></button>`).join('');
-  keys.forEach((_,i) => updateToggleLabel(i));
-}
-function updateToggleLabel(i){
-  const b = document.getElementById('btn-col-'+i);
-  b.textContent = (hiddenCols[i] ? 'Afficher ' : 'Masquer ') + short[keys[i]];
-  b.classList.toggle('hidden-col', hiddenCols[i]);
-}
-function toggleColumn(i){
-  hiddenCols[i] = !hiddenCols[i]; store.set('hiddenCols', hiddenCols);
-  updateToggleLabel(i); renderTables();
-}
-
-function cellTap(el){
-  const span = el.querySelector('span');
-  if (span.classList.contains('hidden-text')) span.classList.remove('hidden-text');
-}
-function jumpTo(l){ document.getElementById('L-' + l)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-function renderTables(){
-  const q = norm(document.getElementById('search-input').value);
-  const L = listById(viewList);
-  const rows = verbsData.map((v,n) => [v,n]).filter(([v]) => (!L || L.bases.includes(v.base)) && keys.some(k => norm(v[k]).includes(q)));
-  const head = `<div class="vrow vhead">${keys.map(k => `<div class="${k === 'french' ? 'fr' : ''}">${short[k]}</div>`).join('')}</div>`;
-  let last = '';
-  const html = rows.map(([v,n]) => {
-    const l = v.base[0].toUpperCase();
-    const id = l !== last ? ` id="L-${l}"` : ''; last = l;
-    return `<div class="vrow"${id}>${keys.map((k,i) =>
-      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} ${v[k].length > 10 ? 'long' : ''} c-${k}" data-label="${short[k]}" onclick="cellTap(this)">${k !== 'french' ? `<button type="button" class="speak-btn mini" onclick="event.stopPropagation();speak(verbsData[${n}].${k})" aria-label="Écouter">🔊</button>` : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${esc(v[k]).replace(/\//g, '/<wbr>')}</span></div>`).join('')}</div>`;
-  }).join('');
-  document.getElementById('tables-container').innerHTML = rows.length ? `<div class="vlist">${head}${html}</div>` : '<p class="empty">Aucun verbe trouvé.</p>';
-  document.getElementById('az').innerHTML = [...new Set(rows.map(([v]) => v.base[0].toUpperCase()))]
-    .map(l => `<button type="button" onclick="jumpTo('${l}')">${l}</button>`).join('');
-}
-
-/* ---------- Listes personnalisées ---------- */
-function renderChips(){
-  for (const w of ['quiz','list']){
-    const cur = w === 'quiz' ? quizList : viewList;
-    document.getElementById('chips-' + w).innerHTML =
-      `<button type="button" class="chip plus" onclick="openListEditor()" aria-label="Créer une liste">＋</button><button type="button" class="chip plus" onclick="openImport()" aria-label="Importer un fichier JSON">📥</button>` +
-      `<button type="button" class="chip ${cur === 'all' ? 'active' : ''}" onclick="selectList('${w}','all')">Tous</button>` +
-      lists.map(l => `<button type="button" class="chip ${cur === l.id ? 'active' : ''}" onclick="selectList('${w}','${l.id}')">${esc(l.name)}</button>`).join('');
-  }
-  const L = listById(viewList);
-  document.getElementById('list-actions').innerHTML = L
-    ? `<div class="list-actions"><span>${L.bases.length} verbe${L.bases.length > 1 ? 's' : ''}${L.tableaux && L.tableaux.length ? '<small>Tableaux ' + L.tableaux.join(', ') + '</small>' : ''}</span><button type="button" class="mini-btn" onclick="openListEditor('${L.id}')">✏️ Modifier</button><button type="button" class="mini-btn" onclick="deleteList('${L.id}')">🗑️ Supprimer</button></div>` : '';
-}
-function selectList(w, id){
-  if (w === 'quiz'){ if (id === quizList) return; quizList = id; renderChips(); initQuiz(); }
-  else { viewList = id; renderChips(); renderTables(); }
-}
-function fixSelections(){
-  let quizLost = false;
-  if (quizList !== 'all' && !listById(quizList)){ quizList = 'all'; quizLost = true; }
-  if (viewList !== 'all' && !listById(viewList)) viewList = 'all';
-  return quizLost;
-}
-function persistLists(){ store.set('lists', lists); renderChips(); }
-
-let editId = null, pickSel = new Set();
-function openListEditor(id){
-  editId = typeof id === 'string' ? id : null;
-  const l = editId && listById(editId);
-  document.getElementById('le-title').textContent = l ? 'Modifier la liste' : 'Nouvelle liste';
-  document.getElementById('le-name').value = l ? l.name : '';
-  document.getElementById('le-search').value = '';
-  document.getElementById('le-error').textContent = '';
-  pickSel = new Set(l ? l.bases : []);
-  renderPicker();
-  document.getElementById('list-editor').showModal();
-}
-const updatePickCount = () => { const n = pickSel.size; document.getElementById('le-count').textContent = `${n} verbe${n > 1 ? 's' : ''} sélectionné${n > 1 ? 's' : ''}`; };
-function renderPicker(){
-  const q = norm(document.getElementById('le-search').value);
-  document.getElementById('le-picker').innerHTML = verbsData.filter(v => !q || keys.some(k => norm(v[k]).includes(q)))
-    .map(v => `<label class="pick"><input type="checkbox" value="${esc(v.base)}" ${pickSel.has(v.base) ? 'checked' : ''}><b>${esc(v.base)}</b><span>${esc(v.french)}</span></label>`).join('');
-  updatePickCount();
-}
-document.getElementById('le-picker').addEventListener('change', e => {
-  const c = e.target; if (c.type !== 'checkbox') return;
-  c.checked ? pickSel.add(c.value) : pickSel.delete(c.value); updatePickCount();
-});
-function clearPicker(){ pickSel.clear(); renderPicker(); }
-function saveList(){
-  const name = document.getElementById('le-name').value.trim(), err = document.getElementById('le-error');
-  if (!name){ err.textContent = 'Donne un nom à ta liste.'; return; }
-  if (!pickSel.size){ err.textContent = 'Choisis au moins un verbe.'; return; }
-  const bases = verbsData.filter(v => pickSel.has(v.base)).map(v => v.base);
-  const existing = editId && listById(editId);
-  if (existing) Object.assign(existing, { name, bases });
-  else { editId = 'l' + Date.now().toString(36); lists.push({ id: editId, name, bases }); }
-  persistLists();
-  document.getElementById('list-editor').close();
-  if (tab === 'quiz'){ quizList = ''; selectList('quiz', editId); } else selectList('list', editId);
-}
-function deleteList(id){
-  const l = listById(id); if (!l || !confirm(`Supprimer la liste « ${l.name} » ?`)) return;
-  lists = lists.filter(x => x.id !== id);
-  const lost = fixSelections(); persistLists(); renderTables(); if (lost) initQuiz();
-}
-
-/* ---------- Import / export JSON ---------- */
-let verbPatches = store.get('verbPatches', {});   // formes ou traductions ajoutées à un verbe existant
-let customVerbs = store.get('customVerbs', []);   // verbes ajoutés par import
-function applyUserData(){
-  for (const v of verbsData){ const p = verbPatches[v.base]; if (p) Object.assign(v, p); }
-  for (const c of customVerbs) if (!verbsData.some(v => v.base === c.base)) verbsData.push({ ...c });
-  verbsData.sort((a,b) => a.base.localeCompare(b.base));
-}
-function showMsg(title, text){
-  document.getElementById('msg-title').textContent = title;
-  document.getElementById('msg-text').textContent = text;
-  document.getElementById('msg').showModal();
-}
-const cap = t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
-const pick = (o, names) => { for (const n of names) if (o && o[n] != null && String(o[n]).trim()) return String(o[n]).trim().slice(0, 80); return ''; };
-function parseImport(data){
-  const arr = Array.isArray(data) ? data : (data.listes || data.lists || ((data.verbes || data.verbs) ? [data] : null));
-  if (!Array.isArray(arr)) throw new Error('format');
-  return arr.map((l, i) => ({
-    name: pick(l, ['title','titre','name','nom']) || `Liste importée ${i + 1}`,
-    tableaux: Array.isArray(l.tableaux) ? l.tableaux.filter(n => Number.isFinite(n)).slice(0, 30) : [],
-    verbs: (l.verbes || l.verbs || []).map(v => ({
-      base: pick(v, ['base','infinitif']),
-      preterit: pick(v, ['preterit','prétérit','past']),
-      participle: pick(v, ['participe_passe','participe','participle','pp']),
-      french: pick(v, ['traduction','translation','french','francais'])
-    })).filter(v => v.base)
-  })).filter(l => l.verbs.length);
-}
-/* Ajoute les variantes manquantes sans rien retirer : ce que ton cours écrit est aussi accepté dans le quiz */
-function mergeParts(existing, incoming, sep){
-  const have = new Set(accepted(existing));
-  let out = existing;
-  for (const part of incoming.split(/[\/,]/).map(x => x.trim()).filter(Boolean)){
-    const key = norm(part);
-    if (!key || have.has(key)) continue;
-    out += sep + part; have.add(key);
-  }
-  return out;
-}
-function savePatch(v){
-  const f = { preterit: v.preterit, participle: v.participle, french: v.french };
-  const c = customVerbs.find(x => x.base === v.base);
-  if (c) Object.assign(c, f); else verbPatches[v.base] = f;
-}
-function importData(text){
-  document.getElementById('settings').close();
-  let parsed;
-  try { parsed = parseImport(JSON.parse(text)); }
-  catch { showMsg('❌ Fichier non reconnu', "Ce fichier n'est pas un JSON de listes valide."); return; }
-  if (!parsed.length){ showMsg('Aucune liste trouvée', 'Le fichier ne contient aucune liste avec des verbes.'); return; }
-  let added = 0, completed = 0, skipped = 0, created = 0, updated = 0, firstId = null;
-  for (const L of parsed){
-    const bases = [];
-    for (const v of L.verbs){
-      let ex = verbsData.find(x => norm(x.base) === norm(v.base));
-      if (ex){
-        let changed = false;
-        for (const [k, sep] of [['preterit','/'], ['participle','/'], ['french',', ']]){
-          if (!v[k]) continue;
-          const m = mergeParts(ex[k], v[k], sep);
-          if (m !== ex[k]){ ex[k] = m; changed = true; }
-        }
-        if (changed){ completed++; savePatch(ex); }
-      } else if (v.preterit && v.participle && v.french){
-        ex = { base: cap(v.base), preterit: v.preterit, participle: v.participle, french: v.french };
-        verbsData.push(ex); customVerbs.push({ ...ex }); added++;
-      } else { skipped++; continue; }
-      if (!bases.includes(ex.base)) bases.push(ex.base);
-    }
-    if (!bases.length) continue;
-    const old = lists.find(l => norm(l.name) === norm(L.name));
-    if (old){ old.bases = bases; old.tableaux = L.tableaux; updated++; firstId = firstId || old.id; }
-    else { const id = 'l' + Date.now().toString(36) + created; lists.push({ id, name: L.name, bases, tableaux: L.tableaux }); created++; firstId = firstId || id; }
-  }
-  verbsData.sort((a,b) => a.base.localeCompare(b.base));
-  store.set('verbPatches', verbPatches); store.set('customVerbs', customVerbs);
-  persistLists(); renderTables();
-  if (firstId) selectList(tab === 'quiz' ? 'quiz' : 'list', firstId);
-  const lines = [`${created} liste${created > 1 ? 's' : ''} créée${created > 1 ? 's' : ''}${updated ? `, ${updated} mise${updated > 1 ? 's' : ''} à jour` : ''}.`];
-  if (added) lines.push(`${added} nouveau${added > 1 ? 'x' : ''} verbe${added > 1 ? 's' : ''} ajouté${added > 1 ? 's' : ''} à la base.`);
-  if (completed) lines.push(`${completed} verbe${completed > 1 ? 's' : ''} complété${completed > 1 ? 's' : ''} avec les variantes de ton fichier (elles sont acceptées dans le quiz).`);
-  if (skipped) lines.push(`${skipped} verbe${skipped > 1 ? 's' : ''} ignoré${skipped > 1 ? 's' : ''} (formes ou traduction manquantes).`);
-  showMsg('✅ Import terminé', lines.join('\n'));
-}
-function openImport(){ document.getElementById('import-file').click(); }
-document.getElementById('import-file').addEventListener('change', async e => {
-  const f = e.target.files[0]; e.target.value = '';
-  if (!f) return;
-  if (f.size > 2e6){ showMsg('Fichier trop gros', 'Le fichier dépasse 2 Mo.'); return; }
-  importData(await f.text());
-});
-function exportLists(){
-  document.getElementById('settings').close();
-  if (!lists.length){ showMsg('Rien à exporter', "Tu n'as pas encore de liste."); return; }
-  const data = { listes: lists.map(l => ({
-    title: l.name, tableaux: l.tableaux || [],
-    verbes: l.bases.map(b => verbsData.find(x => x.base === b)).filter(Boolean)
-      .map(v => ({ base: v.base, preterit: v.preterit, participe_passe: v.participle, traduction: v.french }))
-  })) };
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
-  a.download = 'verbes_irreguliers.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
-
-applyUserData(); applySettings(); buildControls(); restoreSession(); renderChips();
-
-/* ---------- PWA ---------- */
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-</script>
+<script src="verbs.js" defer></script>
+<script src="app.js" defer></script>
 </body>
 </html>
