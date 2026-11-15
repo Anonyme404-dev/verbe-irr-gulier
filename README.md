@@ -37,7 +37,34 @@ Tout est en HTML, CSS et JavaScript, sans bibliothèque ni serveur : il suffit d
 - Chaque liste a son **onglet** dans le mode liste et dans le mode quiz.
 - En mode liste, une liste peut être modifiée ou supprimée.
 - En mode quiz, le score, les verbes à revoir et la maîtrise se calculent sur la liste choisie.
-- Les listes sont enregistrées **sur l'appareil** : elles ne se retrouvent pas d'un appareil à l'autre.
+- Les listes sont enregistrées **sur l'appareil** : elles ne se retrouvent pas d'un appareil à l'autre. Pour les transférer ou les sauvegarder, utilise l'import et l'export JSON ci-dessous.
+
+### 📥 Importer et exporter des listes (JSON)
+- **Importer** : le bouton **📥** (à côté du ＋) ou **Paramètres > Mes listes > Importer**. Choisis un fichier `.json` : chaque liste du fichier est créée et apparaît en onglet dans les modes liste et quiz.
+- **Exporter** : **Paramètres > Mes listes > Exporter** télécharge `verbes_irreguliers.json` avec toutes tes listes. Ce fichier peut être ré-importé tel quel, sur cet appareil ou sur un autre.
+- Si une liste du fichier porte le même nom qu'une liste existante, elle est **mise à jour** (pas de doublon).
+- Un verbe déjà dans la base garde ses formes, et les **variantes de ton fichier sont ajoutées** (par exemple `Stand` : « Se tenir debout, Être debout »). Elles sont toutes acceptées dans le quiz.
+- Un verbe absent de la base est **ajouté** s'il a ses quatre champs. Sinon il est ignoré, et le message de fin d'import l'indique.
+
+Format du fichier :
+
+```json
+{
+  "listes": [
+    {
+      "title": "Liste 1 (jeudi 15 octobre)",
+      "tableaux": [1, 4, 5],
+      "verbes": [
+        { "base": "Be", "preterit": "Was/were", "participe_passe": "Been", "traduction": "Être" },
+        { "base": "Find", "preterit": "Found", "participe_passe": "Found", "traduction": "Trouver" }
+      ]
+    }
+  ]
+}
+```
+
+- `title` est le nom de la liste, `tableaux` est facultatif (les numéros des tableaux du cours, affichés sous le nom de la liste).
+- Les noms de champs `titre`, `participe`, `translation`... sont aussi reconnus, ainsi qu'un fichier qui contient directement une liste de listes.
 
 ### 🔊 Prononciation
 - Voix en anglais grâce à la synthèse vocale du navigateur (`speechSynthesis`), gratuite et sans bibliothèque.
@@ -89,7 +116,7 @@ Le HTTPS est obligatoire pour le mode hors-ligne, et GitHub Pages le fournit. Po
 
 ### 🔄 Mettre à jour le site
 1. Remplace `index.html` (et les autres fichiers modifiés) dans le dépôt.
-2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v10';` devient `'verbes-v11'`, et ainsi de suite.
+2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v11';` devient `'verbes-v12'`, et ainsi de suite.
 3. Sur l'appareil, **recharge la page deux fois** : la première charge les nouveaux fichiers, la seconde les affiche.
 
 ---
@@ -114,6 +141,8 @@ Base|Prétérit|Participe|Traduction
 | `srs` | Progression de la répétition espacée |
 | `session` | Quiz en cours (verbe, texte tapé, score, liste choisie) |
 | `lists` | Listes personnalisées |
+| `verbPatches` | Variantes ajoutées à des verbes existants par un import |
+| `customVerbs` | Verbes ajoutés par un import |
 | `settings` | Paramètres |
 | `hiddenCols` | Colonnes masquées en mode liste |
 
@@ -145,3 +174,4 @@ La clé `settings` contient un numéro de version (`v`). Quand les réglages par
 | `v8` | Bouton 🔊 de retour sur PC (il disparaît quand la voix est désactivée) |
 | `v9` | Nouveau logo « VERBS » pour l'icône de l'application |
 | `v10` | Seul le bouton 🔊 prononce ; par défaut : voix britannique, bouton 🔊 désactivé, thème automatique |
+| `v11` | Import et export JSON des listes |

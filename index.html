@@ -98,6 +98,7 @@ body.no-speech #voice-block{display:none}
 .chip.plus{width:40px;padding:8px 0;font-size:1.15rem;line-height:1;color:var(--primary);border-style:dashed}
 .list-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.85rem;color:var(--muted);font-weight:600}
 .list-actions span{flex:1}
+.list-actions small{display:block;font-weight:400;font-size:.75rem}
 .mini-btn{border:none;background:var(--tab);color:var(--text);font:inherit;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer}
 .picker{max-height:38dvh;overflow:auto;border:1px solid var(--border);border-radius:10px;margin:8px 0 12px}
 .pick{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer}
@@ -107,6 +108,9 @@ body.no-speech #voice-block{display:none}
 .pick-top{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--muted);font-weight:600}
 .pick-top .btn{width:auto;padding:4px 8px;margin:0}
 .err{color:var(--error);font-size:.85rem;min-height:1.3em;margin-bottom:4px}
+.row2{display:flex;gap:8px;margin-top:8px}
+.row2 .mini-btn{flex:1;padding:10px}
+#msg-text{white-space:pre-line;color:var(--muted);font-size:.95rem;margin-bottom:12px}
 .note-p{color:var(--muted);font-size:.9rem;margin-bottom:12px}
 .vlist{border:1px solid var(--border);border-radius:12px;overflow:clip}
 @media(min-width:700px){.vcell.en{display:flex;align-items:center;gap:6px}.vcell .speak-btn.mini{position:static;order:2;flex:none;padding:1px 6px;font-size:.7rem}}
@@ -216,8 +220,20 @@ dialog .btn{margin-top:12px}
       <button type="button" data-v="dark" onclick="setSetting('theme','dark')">Sombre</button>
     </div>
   </div>
+  <div class="setting col">
+    <div>Mes listes<small>Importe ou sauvegarde tes listes (fichier JSON)</small></div>
+    <div class="row2"><button type="button" class="mini-btn" onclick="openImport()">📥 Importer</button><button type="button" class="mini-btn" onclick="exportLists()">📤 Exporter</button></div>
+  </div>
   <button class="btn link" onclick="resetStats()">🗑️ Réinitialiser ma progression</button>
   <button class="btn" onclick="document.getElementById('settings').close()">Fermer</button>
+</dialog>
+
+<input type="file" id="import-file" accept=".json,application/json" hidden>
+
+<dialog id="msg">
+  <h2 id="msg-title"></h2>
+  <p id="msg-text"></p>
+  <button class="btn" onclick="document.getElementById('msg').close()">OK</button>
 </dialog>
 
 <dialog id="list-editor">
@@ -704,7 +720,7 @@ function renderTables(){
     const l = v.base[0].toUpperCase();
     const id = l !== last ? ` id="L-${l}"` : ''; last = l;
     return `<div class="vrow"${id}>${keys.map((k,i) =>
-      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} ${v[k].length > 10 ? 'long' : ''} c-${k}" data-label="${short[k]}" onclick="cellTap(this)">${k !== 'french' ? `<button type="button" class="speak-btn mini" onclick="event.stopPropagation();speak(verbsData[${n}].${k})" aria-label="Écouter">🔊</button>` : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k].replace(/\//g, '/<wbr>')}</span></div>`).join('')}</div>`;
+      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} ${v[k].length > 10 ? 'long' : ''} c-${k}" data-label="${short[k]}" onclick="cellTap(this)">${k !== 'french' ? `<button type="button" class="speak-btn mini" onclick="event.stopPropagation();speak(verbsData[${n}].${k})" aria-label="Écouter">🔊</button>` : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${esc(v[k]).replace(/\//g, '/<wbr>')}</span></div>`).join('')}</div>`;
   }).join('');
   document.getElementById('tables-container').innerHTML = rows.length ? `<div class="vlist">${head}${html}</div>` : '<p class="empty">Aucun verbe trouvé.</p>';
   document.getElementById('az').innerHTML = [...new Set(rows.map(([v]) => v.base[0].toUpperCase()))]
@@ -716,13 +732,13 @@ function renderChips(){
   for (const w of ['quiz','list']){
     const cur = w === 'quiz' ? quizList : viewList;
     document.getElementById('chips-' + w).innerHTML =
-      `<button type="button" class="chip plus" onclick="openListEditor()" aria-label="Créer une liste">＋</button>` +
+      `<button type="button" class="chip plus" onclick="openListEditor()" aria-label="Créer une liste">＋</button><button type="button" class="chip plus" onclick="openImport()" aria-label="Importer un fichier JSON">📥</button>` +
       `<button type="button" class="chip ${cur === 'all' ? 'active' : ''}" onclick="selectList('${w}','all')">Tous</button>` +
       lists.map(l => `<button type="button" class="chip ${cur === l.id ? 'active' : ''}" onclick="selectList('${w}','${l.id}')">${esc(l.name)}</button>`).join('');
   }
   const L = listById(viewList);
   document.getElementById('list-actions').innerHTML = L
-    ? `<div class="list-actions"><span>${L.bases.length} verbe${L.bases.length > 1 ? 's' : ''}</span><button type="button" class="mini-btn" onclick="openListEditor('${L.id}')">✏️ Modifier</button><button type="button" class="mini-btn" onclick="deleteList('${L.id}')">🗑️ Supprimer</button></div>` : '';
+    ? `<div class="list-actions"><span>${L.bases.length} verbe${L.bases.length > 1 ? 's' : ''}${L.tableaux && L.tableaux.length ? '<small>Tableaux ' + L.tableaux.join(', ') + '</small>' : ''}</span><button type="button" class="mini-btn" onclick="openListEditor('${L.id}')">✏️ Modifier</button><button type="button" class="mini-btn" onclick="deleteList('${L.id}')">🗑️ Supprimer</button></div>` : '';
 }
 function selectList(w, id){
   if (w === 'quiz'){ if (id === quizList) return; quizList = id; renderChips(); initQuiz(); }
@@ -752,7 +768,7 @@ const updatePickCount = () => { const n = pickSel.size; document.getElementById(
 function renderPicker(){
   const q = norm(document.getElementById('le-search').value);
   document.getElementById('le-picker').innerHTML = verbsData.filter(v => !q || keys.some(k => norm(v[k]).includes(q)))
-    .map(v => `<label class="pick"><input type="checkbox" value="${esc(v.base)}" ${pickSel.has(v.base) ? 'checked' : ''}><b>${v.base}</b><span>${v.french}</span></label>`).join('');
+    .map(v => `<label class="pick"><input type="checkbox" value="${esc(v.base)}" ${pickSel.has(v.base) ? 'checked' : ''}><b>${esc(v.base)}</b><span>${esc(v.french)}</span></label>`).join('');
   updatePickCount();
 }
 document.getElementById('le-picker').addEventListener('change', e => {
@@ -778,7 +794,114 @@ function deleteList(id){
   const lost = fixSelections(); persistLists(); renderTables(); if (lost) initQuiz();
 }
 
-applySettings(); buildControls(); restoreSession(); renderChips();
+/* ---------- Import / export JSON ---------- */
+let verbPatches = store.get('verbPatches', {});   // formes ou traductions ajoutées à un verbe existant
+let customVerbs = store.get('customVerbs', []);   // verbes ajoutés par import
+function applyUserData(){
+  for (const v of verbsData){ const p = verbPatches[v.base]; if (p) Object.assign(v, p); }
+  for (const c of customVerbs) if (!verbsData.some(v => v.base === c.base)) verbsData.push({ ...c });
+  verbsData.sort((a,b) => a.base.localeCompare(b.base));
+}
+function showMsg(title, text){
+  document.getElementById('msg-title').textContent = title;
+  document.getElementById('msg-text').textContent = text;
+  document.getElementById('msg').showModal();
+}
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+const pick = (o, names) => { for (const n of names) if (o && o[n] != null && String(o[n]).trim()) return String(o[n]).trim().slice(0, 80); return ''; };
+function parseImport(data){
+  const arr = Array.isArray(data) ? data : (data.listes || data.lists || ((data.verbes || data.verbs) ? [data] : null));
+  if (!Array.isArray(arr)) throw new Error('format');
+  return arr.map((l, i) => ({
+    name: pick(l, ['title','titre','name','nom']) || `Liste importée ${i + 1}`,
+    tableaux: Array.isArray(l.tableaux) ? l.tableaux.filter(n => Number.isFinite(n)).slice(0, 30) : [],
+    verbs: (l.verbes || l.verbs || []).map(v => ({
+      base: pick(v, ['base','infinitif']),
+      preterit: pick(v, ['preterit','prétérit','past']),
+      participle: pick(v, ['participe_passe','participe','participle','pp']),
+      french: pick(v, ['traduction','translation','french','francais'])
+    })).filter(v => v.base)
+  })).filter(l => l.verbs.length);
+}
+/* Ajoute les variantes manquantes sans rien retirer : ce que ton cours écrit est aussi accepté dans le quiz */
+function mergeParts(existing, incoming, sep){
+  const have = new Set(accepted(existing));
+  let out = existing;
+  for (const part of incoming.split(/[\/,]/).map(x => x.trim()).filter(Boolean)){
+    const key = norm(part);
+    if (!key || have.has(key)) continue;
+    out += sep + part; have.add(key);
+  }
+  return out;
+}
+function savePatch(v){
+  const f = { preterit: v.preterit, participle: v.participle, french: v.french };
+  const c = customVerbs.find(x => x.base === v.base);
+  if (c) Object.assign(c, f); else verbPatches[v.base] = f;
+}
+function importData(text){
+  document.getElementById('settings').close();
+  let parsed;
+  try { parsed = parseImport(JSON.parse(text)); }
+  catch { showMsg('❌ Fichier non reconnu', "Ce fichier n'est pas un JSON de listes valide."); return; }
+  if (!parsed.length){ showMsg('Aucune liste trouvée', 'Le fichier ne contient aucune liste avec des verbes.'); return; }
+  let added = 0, completed = 0, skipped = 0, created = 0, updated = 0, firstId = null;
+  for (const L of parsed){
+    const bases = [];
+    for (const v of L.verbs){
+      let ex = verbsData.find(x => norm(x.base) === norm(v.base));
+      if (ex){
+        let changed = false;
+        for (const [k, sep] of [['preterit','/'], ['participle','/'], ['french',', ']]){
+          if (!v[k]) continue;
+          const m = mergeParts(ex[k], v[k], sep);
+          if (m !== ex[k]){ ex[k] = m; changed = true; }
+        }
+        if (changed){ completed++; savePatch(ex); }
+      } else if (v.preterit && v.participle && v.french){
+        ex = { base: cap(v.base), preterit: v.preterit, participle: v.participle, french: v.french };
+        verbsData.push(ex); customVerbs.push({ ...ex }); added++;
+      } else { skipped++; continue; }
+      if (!bases.includes(ex.base)) bases.push(ex.base);
+    }
+    if (!bases.length) continue;
+    const old = lists.find(l => norm(l.name) === norm(L.name));
+    if (old){ old.bases = bases; old.tableaux = L.tableaux; updated++; firstId = firstId || old.id; }
+    else { const id = 'l' + Date.now().toString(36) + created; lists.push({ id, name: L.name, bases, tableaux: L.tableaux }); created++; firstId = firstId || id; }
+  }
+  verbsData.sort((a,b) => a.base.localeCompare(b.base));
+  store.set('verbPatches', verbPatches); store.set('customVerbs', customVerbs);
+  persistLists(); renderTables();
+  if (firstId) selectList(tab === 'quiz' ? 'quiz' : 'list', firstId);
+  const lines = [`${created} liste${created > 1 ? 's' : ''} créée${created > 1 ? 's' : ''}${updated ? `, ${updated} mise${updated > 1 ? 's' : ''} à jour` : ''}.`];
+  if (added) lines.push(`${added} nouveau${added > 1 ? 'x' : ''} verbe${added > 1 ? 's' : ''} ajouté${added > 1 ? 's' : ''} à la base.`);
+  if (completed) lines.push(`${completed} verbe${completed > 1 ? 's' : ''} complété${completed > 1 ? 's' : ''} avec les variantes de ton fichier (elles sont acceptées dans le quiz).`);
+  if (skipped) lines.push(`${skipped} verbe${skipped > 1 ? 's' : ''} ignoré${skipped > 1 ? 's' : ''} (formes ou traduction manquantes).`);
+  showMsg('✅ Import terminé', lines.join('\n'));
+}
+function openImport(){ document.getElementById('import-file').click(); }
+document.getElementById('import-file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  if (f.size > 2e6){ showMsg('Fichier trop gros', 'Le fichier dépasse 2 Mo.'); return; }
+  importData(await f.text());
+});
+function exportLists(){
+  document.getElementById('settings').close();
+  if (!lists.length){ showMsg('Rien à exporter', "Tu n'as pas encore de liste."); return; }
+  const data = { listes: lists.map(l => ({
+    title: l.name, tableaux: l.tableaux || [],
+    verbes: l.bases.map(b => verbsData.find(x => x.base === b)).filter(Boolean)
+      .map(v => ({ base: v.base, preterit: v.preterit, participe_passe: v.participle, traduction: v.french }))
+  })) };
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  a.download = 'verbes_irreguliers.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+applyUserData(); applySettings(); buildControls(); restoreSession(); renderChips();
 
 /* ---------- PWA ---------- */
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')){
