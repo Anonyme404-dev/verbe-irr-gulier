@@ -28,7 +28,7 @@ Tout est en HTML, CSS et JavaScript, sans bibliothèque ni serveur : il suffit d
 ### 📖 Mode Liste
 - Les 190 verbes, avec recherche (sans tenir compte des accents) et boutons **Masquer** une colonne pour t'auto-tester. Un clic sur une case masquée la révèle.
 - **Téléphone (écran de moins de 700 px)** : une carte par verbe, en 2×2, avec un bouton 🔊.
-- **PC (700 px et plus)** : un tableau, sans bouton. Un clic sur un mot anglais le prononce.
+- **PC (700 px et plus)** : un tableau, avec un bouton 🔊 à droite de chaque mot anglais. Un clic sur le mot le prononce aussi.
 - Barre de lettres **A à Z** facultative (désactivée par défaut).
 
 ### ➕ Listes personnalisées
@@ -53,7 +53,7 @@ Tout est en HTML, CSS et JavaScript, sans bibliothèque ni serveur : il suffit d
 | Thème (Auto, Clair, Sombre) | Auto |
 | Réinitialiser ma progression | — |
 
-Désactiver le bouton 🔊 le retire partout, y compris sur le clic des mots en mode PC.
+Désactiver le bouton « écouter » 🔊 le fait disparaître partout (téléphone et PC) et coupe la prononciation.
 
 ### 📲 Application installable (PWA)
 - Installable depuis Chrome, Edge ou Brave (« Installer l'application » ou « Ajouter à l'écran d'accueil »).
@@ -84,7 +84,7 @@ Le HTTPS est obligatoire pour le mode hors-ligne, et GitHub Pages le fournit. Po
 
 ### 🔄 Mettre à jour le site
 1. Remplace `index.html` (et les autres fichiers modifiés) dans le dépôt.
-2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v7';` devient `'verbes-v8'`, et ainsi de suite.
+2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v8';` devient `'verbes-v9'`, et ainsi de suite.
 3. Sur l'appareil, **recharge la page deux fois** : la première charge les nouveaux fichiers, la seconde les affiche.
 
 ---
@@ -135,3 +135,4 @@ Vider les données du site dans le navigateur efface tout cela.
 | `v5` | Cartes téléphone avec 🔊, listes personnalisées, barre A–Z en option |
 | `v6` | Plus de clavier automatique sur téléphone |
 | `v7` | Comptes retirés, débordement des cartes corrigé, formes complètes acceptées |
+| `v8` | Bouton 🔊 de retour sur PC (il disparaît quand la voix est désactivée) |
