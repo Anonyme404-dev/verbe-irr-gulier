@@ -28,7 +28,8 @@ Tout est en HTML, CSS et JavaScript, sans bibliothèque ni serveur : il suffit d
 ### 📖 Mode Liste
 - Les 190 verbes, avec recherche (sans tenir compte des accents) et boutons **Masquer** une colonne pour t'auto-tester. Un clic sur une case masquée la révèle.
 - **Téléphone (écran de moins de 700 px)** : une carte par verbe, en 2×2, avec un bouton 🔊.
-- **PC (700 px et plus)** : un tableau, avec un bouton 🔊 à droite de chaque mot anglais. Un clic sur le mot le prononce aussi.
+- Les boutons 🔊 n'apparaissent que si la voix est activée dans les paramètres. **Seul le bouton prononce** : un clic sur le verbe ne fait rien (sauf pour révéler une colonne masquée).
+- **PC (700 px et plus)** : un tableau, avec un bouton 🔊 à droite de chaque mot anglais.
 - Barre de lettres **A à Z** facultative (désactivée par défaut).
 
 ### ➕ Listes personnalisées
@@ -40,16 +41,17 @@ Tout est en HTML, CSS et JavaScript, sans bibliothèque ni serveur : il suffit d
 
 ### 🔊 Prononciation
 - Voix en anglais grâce à la synthèse vocale du navigateur (`speechSynthesis`), gratuite et sans bibliothèque.
-- Choix de l'accent dans les paramètres : Auto, Américaine ou Britannique, avec un bouton « Tester la voix » et l'affichage de la voix utilisée.
+- La prononciation est **désactivée par défaut** : active le bouton « écouter » dans les paramètres.
+- Choix de l'accent dans les paramètres : Auto, Américaine ou Britannique (**Britannique par défaut**), avec un bouton « Tester la voix » et l'affichage de la voix utilisée.
 - Les voix dépendent de ton appareil. Si aucune voix anglaise n'est détectée, installe-la dans les réglages « Synthèse vocale » du téléphone.
 
 ### ⚙️ Paramètres (roue en haut à droite)
 | Réglage | Par défaut |
 |---|---|
-| Bouton « écouter » 🔊 | activé |
+| Bouton « écouter » 🔊 | désactivé |
 | Écouter les 3 formes (après chaque réponse du quiz) | désactivé |
 | Barre de lettres A–Z | désactivée |
-| Accent de la voix | Auto |
+| Accent de la voix | Britannique |
 | Thème (Auto, Clair, Sombre) | Auto |
 | Réinitialiser ma progression | — |
 
@@ -57,6 +59,7 @@ Désactiver le bouton « écouter » 🔊 le fait disparaître partout (téléph
 
 ### 📲 Application installable (PWA)
 - Installable depuis Chrome, Edge ou Brave (« Installer l'application » ou « Ajouter à l'écran d'accueil »).
+- Si tu l'as déjà installée, désinstalle-la puis réinstalle-la pour voir la nouvelle icône.
 - Fonctionne **hors-ligne** après la première visite.
 - Le clavier ne s'ouvre pas tout seul sur téléphone ; le curseur se place automatiquement seulement sur PC.
 
@@ -69,7 +72,9 @@ Désactiver le bouton « écouter » 🔊 le fait disparaître partout (téléph
 | `index.html` | Tout le site : page, style et code |
 | `manifest.json` | Description de l'application (nom, couleurs, icônes) |
 | `sw.js` | Service worker : cache et mode hors-ligne |
-| `icon-192.png`, `icon-512.png` | Icônes de l'application |
+| `icon-192.png`, `icon-512.png` | Icônes de l'application (logo rond « VERBS », fond transparent) |
+| `icon-maskable-192.png`, `icon-maskable-512.png` | Versions sur fond blanc pour les icônes arrondies d'Android |
+| `apple-touch-icon.png` | Icône pour l'écran d'accueil de l'iPhone et de l'iPad |
 | `README.md` | Ce fichier |
 
 ---
@@ -84,7 +89,7 @@ Le HTTPS est obligatoire pour le mode hors-ligne, et GitHub Pages le fournit. Po
 
 ### 🔄 Mettre à jour le site
 1. Remplace `index.html` (et les autres fichiers modifiés) dans le dépôt.
-2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v8';` devient `'verbes-v9'`, et ainsi de suite.
+2. Dans `sw.js`, **change le numéro de version** du cache : `const CACHE = 'verbes-v10';` devient `'verbes-v11'`, et ainsi de suite.
 3. Sur l'appareil, **recharge la page deux fois** : la première charge les nouveaux fichiers, la seconde les affiche.
 
 ---
@@ -114,6 +119,8 @@ Base|Prétérit|Participe|Traduction
 
 Vider les données du site dans le navigateur efface tout cela.
 
+La clé `settings` contient un numéro de version (`v`). Quand les réglages par défaut changent, l'ancien choix de voix et de bouton 🔊 est remplacé une seule fois par les nouveaux défauts.
+
 ---
 
 ## ⚠️ Limites connues
@@ -136,3 +143,5 @@ Vider les données du site dans le navigateur efface tout cela.
 | `v6` | Plus de clavier automatique sur téléphone |
 | `v7` | Comptes retirés, débordement des cartes corrigé, formes complètes acceptées |
 | `v8` | Bouton 🔊 de retour sur PC (il disparaît quand la voix est désactivée) |
+| `v9` | Nouveau logo « VERBS » pour l'icône de l'application |
+| `v10` | Seul le bouton 🔊 prononce ; par défaut : voix britannique, bouton 🔊 désactivé, thème automatique |

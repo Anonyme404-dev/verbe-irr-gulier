@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#4f46e5">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--primary:#4f46e5;--primary-hover:#4338ca;--bg:#f1f5f9;--card:#fff;--soft:#f8fafc;--text:#0f172a;--muted:#64748b;--border:#cbd5e1;--tab:#e2e8f0;--success:#16a34a;--error:#dc2626}
@@ -179,7 +179,7 @@ dialog .btn{margin-top:12px}
     <div id="list-actions"></div>
     <input type="search" class="search-bar" id="search-input" placeholder="🔍 Rechercher..." oninput="renderTables()">
     <div class="controls-row" id="controls-row"></div>
-    <p class="hint">👆 Touche un mot ou le 🔊 pour l'écouter</p>
+    <p class="hint">👆 Touche le 🔊 pour écouter un mot</p>
     <div class="az" id="az"></div>
     <div id="tables-container"></div>
   </section>
@@ -437,7 +437,10 @@ const store = {
   del(k){ try { localStorage.removeItem(k); } catch {} }
 };
 let hiddenCols = store.get('hiddenCols', [false,false,false,false]);
-let settings = Object.assign({speech:true, listenAll:false, letters:false, accent:'auto', theme:'auto'}, store.get('settings', {}));
+// v2 : nouveaux réglages par défaut (bouton 🔊 désactivé, voix britannique) appliqués une seule fois
+const savedSettings = store.get('settings', {});
+if (savedSettings.v !== 2){ delete savedSettings.speech; delete savedSettings.accent; savedSettings.v = 2; store.set('settings', savedSettings); }
+let settings = Object.assign({speech:false, listenAll:false, letters:false, accent:'uk', theme:'auto'}, savedSettings);
 
 /* ---------- Paramètres ---------- */
 const canSpeak = 'speechSynthesis' in window;
@@ -686,10 +689,9 @@ function toggleColumn(i){
   updateToggleLabel(i); renderTables();
 }
 
-function cellTap(el, n, k){
+function cellTap(el){
   const span = el.querySelector('span');
-  if (span.classList.contains('hidden-text')){ span.classList.remove('hidden-text'); return; }
-  if (k !== 'french') speak(verbsData[n][k]);
+  if (span.classList.contains('hidden-text')) span.classList.remove('hidden-text');
 }
 function jumpTo(l){ document.getElementById('L-' + l)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function renderTables(){
@@ -702,7 +704,7 @@ function renderTables(){
     const l = v.base[0].toUpperCase();
     const id = l !== last ? ` id="L-${l}"` : ''; last = l;
     return `<div class="vrow"${id}>${keys.map((k,i) =>
-      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} ${v[k].length > 10 ? 'long' : ''} c-${k}" data-label="${short[k]}" onclick="cellTap(this,${n},'${k}')">${k !== 'french' ? '<button type="button" class="speak-btn mini" tabindex="-1" aria-label="Écouter">🔊</button>' : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k].replace(/\//g, '/<wbr>')}</span></div>`).join('')}</div>`;
+      `<div class="vcell ${k === 'french' ? 'fr' : 'en'} ${v[k].length > 10 ? 'long' : ''} c-${k}" data-label="${short[k]}" onclick="cellTap(this)">${k !== 'french' ? `<button type="button" class="speak-btn mini" onclick="event.stopPropagation();speak(verbsData[${n}].${k})" aria-label="Écouter">🔊</button>` : ''}<span class="${hiddenCols[i] ? 'hidden-text' : ''}">${v[k].replace(/\//g, '/<wbr>')}</span></div>`).join('')}</div>`;
   }).join('');
   document.getElementById('tables-container').innerHTML = rows.length ? `<div class="vlist">${head}${html}</div>` : '<p class="empty">Aucun verbe trouvé.</p>';
   document.getElementById('az').innerHTML = [...new Set(rows.map(([v]) => v.base[0].toUpperCase()))]
